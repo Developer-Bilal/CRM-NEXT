@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { use } from "react";
 
 interface User {
   id: string;
