@@ -11,8 +11,8 @@ export default async function Home() {
   return (
     <div className="flex items-center justify-center flex-col h-screen gap-8">
       <div>Home page</div>
-      {session ? (
-        <div>Hello {session?.user.name}</div>
+      {session && session.user ? (
+        <div>Hello {session.user.name}</div>
       ) : (
         <div>Not signed in</div>
       )}
