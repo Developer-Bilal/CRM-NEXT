@@ -2,4 +2,8 @@
 
 import { signIn } from "next-auth/react";
 
-export default () => <button onClick={() => signIn()}>Sign in</button>;
+const SignIn = () => {
+  return <button onClick={() => signIn()}>Sign in</button>;
+};
+
+export default SignIn;
