@@ -28,7 +28,7 @@ const DeleteBtn = ({ id }: DeleteBtnProps) => {
           )
           .then(() => {
             console.log("Deleted");
-            router.push("/dashboard/users");
+            router.refresh();
           })
           .catch((err) => console.log(err));
       } else {
