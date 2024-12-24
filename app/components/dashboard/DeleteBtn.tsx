@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import swal from "sweetalert";
 
 interface DeleteBtnProps {
@@ -19,7 +20,7 @@ const DeleteBtn = ({ id }: DeleteBtnProps) => {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        swal("Deleted! this user has been deleted!", {
+        swal("User has been deleted!", {
           icon: "success",
         });
         axios
@@ -29,10 +30,11 @@ const DeleteBtn = ({ id }: DeleteBtnProps) => {
           .then(() => {
             console.log("Deleted");
             router.refresh();
+            revalidatePath("/dashboard/users");
           })
           .catch((err) => console.log(err));
       } else {
-        swal("This user is not deleted!");
+        swal("User not deleted!");
       }
     });
   };
