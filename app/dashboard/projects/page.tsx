@@ -10,7 +10,8 @@ interface Project {
 
 const Projects = async () => {
   const res = await fetch(
-    "https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/projects"
+    "https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/projects",
+    { cache: "no-store" }
   );
 
   const projects = await res.json();
