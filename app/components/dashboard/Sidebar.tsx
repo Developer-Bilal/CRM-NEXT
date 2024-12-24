@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SignOut from "../SignOut";
 
 const Sidebar = () => {
   return (
@@ -39,9 +40,7 @@ const Sidebar = () => {
             </Link>
           </li>
           <li className="p-4 hover:bg-gray-700">
-            <Link href="/dashboard/users">
-              <div>Logout</div>
-            </Link>
+            <SignOut />
           </li>
         </ul>
       </nav>
