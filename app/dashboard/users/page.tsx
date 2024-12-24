@@ -9,12 +9,11 @@ interface User {
 
 const Users = async () => {
   const res = await fetch(
-    "https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/users"
+    "https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/users",
+    { cache: "no-store" }
   );
-
   const users = await res.json();
 
-  console.log(users);
   return (
     <div className="m-4">
       <div className="my-2 flex items-center justify-end">

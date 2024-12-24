@@ -2,7 +2,6 @@
 
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { revalidatePath } from "next/cache";
 import swal from "sweetalert";
 
 interface DeleteBtnProps {
@@ -12,7 +11,7 @@ interface DeleteBtnProps {
 const DeleteBtn = ({ id }: DeleteBtnProps) => {
   const router = useRouter();
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     swal({
       title: "Are you sure?",
       icon: "warning",
@@ -30,7 +29,6 @@ const DeleteBtn = ({ id }: DeleteBtnProps) => {
           .then(() => {
             console.log("Deleted");
             router.refresh();
-            revalidatePath("/dashboard/users");
           })
           .catch((err) => console.log(err));
       } else {
