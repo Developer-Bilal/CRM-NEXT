@@ -1,3 +1,4 @@
+import DeleteBtn from "@/app/components/dashboard/DeleteBtn";
 import Link from "next/link";
 
 interface User {
@@ -42,14 +43,10 @@ const Users = async () => {
               <td className="py-3 px-6 flex gap-2">
                 <Link href={`/dashboard/users/edit/${user.id}`}>
                   <button className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700">
-                    Edit
+                    Edit User
                   </button>
                 </Link>
-                <Link href={`/dashboard/users/delete/${user.id}`}>
-                  <button className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700">
-                    Delete
-                  </button>
-                </Link>
+                <DeleteBtn id={user.id} />
               </td>
             </tr>
           ))}
