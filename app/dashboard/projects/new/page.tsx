@@ -2,56 +2,69 @@
 
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import React, { FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 
-const CreateUser = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+const CreateProject = () => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [status, setStatus] = useState("");
   const router = useRouter();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     const data = {
-      name,
-      email,
+      title,
+      description,
+      status,
     };
 
     axios
-      .post(`https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/users`, data)
+      .post(`https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/projects`, data)
       .then((res) => {
         console.log(res.data);
-        router.push("/dashboard/users");
+        router.push("/dashboard/projects");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+      });
   };
-
   return (
     <div className="m-4">
       <form
         onSubmit={handleSubmit}
         className="max-w-md mx-auto p-4 bg-white rounded shadow"
       >
-        <h2 className="text-lg font-semibold mb-4">Create User</h2>
+        <h2 className="text-lg font-semibold mb-4">Create Project</h2>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            Name
+            Title
           </label>
           <input
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             required
           />
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            Email
+            Description
           </label>
           <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Status
+          </label>
+          <input
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
             required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
           />
@@ -67,4 +80,4 @@ const CreateUser = () => {
   );
 };
 
-export default CreateUser;
+export default CreateProject;

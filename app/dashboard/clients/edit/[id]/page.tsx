@@ -1,13 +1,27 @@
 "use client";
 
 import axios from "axios";
-import { useRouter } from "next/navigation";
-import React, { FormEvent, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { FormEvent, useEffect, useState } from "react";
 
-const CreateUser = () => {
+const EditClient = () => {
+  const { id } = useParams();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const router = useRouter();
+
+  useEffect(() => {
+    axios
+      .get(`https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/users/${id}`)
+      .then((res) => {
+        console.log(res.data);
+        setName(res.data.name);
+        setEmail(res.data.email);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -18,12 +32,17 @@ const CreateUser = () => {
     };
 
     axios
-      .post(`https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/users`, data)
+      .put(
+        `https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/users/${id}`,
+        data
+      )
       .then((res) => {
         console.log(res.data);
-        router.push("/dashboard/users");
+        router.push("/dashboard/clients");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -32,7 +51,7 @@ const CreateUser = () => {
         onSubmit={handleSubmit}
         className="max-w-md mx-auto p-4 bg-white rounded shadow"
       >
-        <h2 className="text-lg font-semibold mb-4">Create User</h2>
+        <h2 className="text-lg font-semibold mb-4">Edit Client</h2>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Name
@@ -67,4 +86,4 @@ const CreateUser = () => {
   );
 };
 
-export default CreateUser;
+export default EditClient;

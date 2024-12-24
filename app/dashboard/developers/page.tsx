@@ -1,3 +1,4 @@
+import DeleteBtn from "@/app/components/dashboard/DeleteBtn";
 import Link from "next/link";
 
 interface Developer {
@@ -8,16 +9,16 @@ interface Developer {
 
 const Developers = async () => {
   const res = await fetch(
-    "https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/users"
+    "https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/users",
+    { cache: "no-store" }
   );
 
   const developers = await res.json();
 
-  console.log(developers);
   return (
     <div className="m-4">
       <div className="my-2 flex items-center justify-end">
-        <Link href="/dashboard/users/new">
+        <Link href="/dashboard/developers/new">
           <button className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600">
             Add Developer
           </button>
@@ -40,16 +41,12 @@ const Developers = async () => {
               <td className="py-3 px-6">{developer.name}</td>
               <td className="py-3 px-6">{developer.email}</td>
               <td className="py-3 px-6 flex gap-2">
-                <Link href={`/dashboard/users/edit/${developer.id}`}>
+                <Link href={`/dashboard/developers/edit/${developer.id}`}>
                   <button className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700">
                     Edit
                   </button>
                 </Link>
-                <Link href={`/dashboard/users/delete/${developer.id}`}>
-                  <button className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700">
-                    Delete
-                  </button>
-                </Link>
+                <DeleteBtn id={developer.id} />
               </td>
             </tr>
           ))}

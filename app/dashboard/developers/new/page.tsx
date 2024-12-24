@@ -4,7 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useState } from "react";
 
-const CreateUser = () => {
+const CreateDeveloper = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const router = useRouter();
@@ -21,7 +21,7 @@ const CreateUser = () => {
       .post(`https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/users`, data)
       .then((res) => {
         console.log(res.data);
-        router.push("/dashboard/users");
+        router.push("/dashboard/developers");
       })
       .catch((err) => console.log(err));
   };
@@ -32,7 +32,7 @@ const CreateUser = () => {
         onSubmit={handleSubmit}
         className="max-w-md mx-auto p-4 bg-white rounded shadow"
       >
-        <h2 className="text-lg font-semibold mb-4">Create User</h2>
+        <h2 className="text-lg font-semibold mb-4">Create Developer</h2>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Name
@@ -67,4 +67,4 @@ const CreateUser = () => {
   );
 };
 
-export default CreateUser;
+export default CreateDeveloper;

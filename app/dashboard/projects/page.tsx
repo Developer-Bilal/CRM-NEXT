@@ -1,3 +1,4 @@
+import DeleteProjectBtn from "@/app/components/dashboard/projects/DeleteProjectBtn";
 import Link from "next/link";
 
 interface Project {
@@ -18,7 +19,7 @@ const Projects = async () => {
   return (
     <div className="m-4">
       <div className="my-2 flex items-center justify-end">
-        <Link href="/dashboard/users/new">
+        <Link href="/dashboard/projects/new">
           <button className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600">
             Add Project
           </button>
@@ -43,16 +44,12 @@ const Projects = async () => {
               <td className="py-3 px-6">{project.description}</td>
               <td className="py-3 px-6">{project.status}</td>
               <td className="py-3 px-6 flex gap-2">
-                <Link href={`/dashboard/users/edit/${project.id}`}>
+                <Link href={`/dashboard/projects/edit/${project.id}`}>
                   <button className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700">
                     Edit
                   </button>
                 </Link>
-                <Link href={`/dashboard/users/delete/${project.id}`}>
-                  <button className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700">
-                    Delete
-                  </button>
-                </Link>
+                <DeleteProjectBtn id={project.id} />
               </td>
             </tr>
           ))}

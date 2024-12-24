@@ -1,3 +1,4 @@
+import DeleteBtn from "@/app/components/dashboard/DeleteBtn";
 import Link from "next/link";
 
 interface Client {
@@ -8,16 +9,15 @@ interface Client {
 
 const Clients = async () => {
   const res = await fetch(
-    "https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/users"
+    "https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/users",
+    { cache: "no-store" }
   );
-
   const clients = await res.json();
 
-  console.log(clients);
   return (
     <div className="m-4">
       <div className="my-2 flex items-center justify-end">
-        <Link href="/dashboard/users/new">
+        <Link href="/dashboard/clients/new">
           <button className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600">
             Add Client
           </button>
@@ -40,16 +40,12 @@ const Clients = async () => {
               <td className="py-3 px-6">{client.name}</td>
               <td className="py-3 px-6">{client.email}</td>
               <td className="py-3 px-6 flex gap-2">
-                <Link href={`/dashboard/users/edit/${client.id}`}>
+                <Link href={`/dashboard/clients/edit/${client.id}`}>
                   <button className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700">
                     Edit
                   </button>
                 </Link>
-                <Link href={`/dashboard/users/delete/${client.id}`}>
-                  <button className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700">
-                    Delete
-                  </button>
-                </Link>
+                <DeleteBtn id={client.id} />
               </td>
             </tr>
           ))}
