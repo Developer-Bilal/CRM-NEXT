@@ -12,7 +12,7 @@ const EditClient = () => {
 
   useEffect(() => {
     axios
-      .get(`https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/users/${id}`)
+      .get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users/${id}`)
       .then((res) => {
         console.log(res.data);
         setName(res.data.name);
@@ -32,10 +32,7 @@ const EditClient = () => {
     };
 
     axios
-      .put(
-        `https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/users/${id}`,
-        data
-      )
+      .put(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users/${id}`, data)
       .then((res) => {
         console.log(res.data);
         router.push("/dashboard/clients");

@@ -20,7 +20,7 @@ const CreateProject = () => {
     };
 
     axios
-      .post(`https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/projects`, data)
+      .post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/projects`, data)
       .then((res) => {
         console.log(res.data);
         router.push("/dashboard/projects");

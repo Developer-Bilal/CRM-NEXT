@@ -18,7 +18,7 @@ const CreateClient = () => {
     };
 
     axios
-      .post(`https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/users`, data)
+      .post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users`, data)
       .then((res) => {
         console.log(res.data);
         router.push("/dashboard/clients");

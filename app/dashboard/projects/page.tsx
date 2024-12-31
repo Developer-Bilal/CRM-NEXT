@@ -9,10 +9,9 @@ interface Project {
 }
 
 const Projects = async () => {
-  const res = await fetch(
-    "https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/projects",
-    { cache: "no-store" }
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/projects`, {
+    cache: "no-store",
+  });
 
   const projects = await res.json();
 

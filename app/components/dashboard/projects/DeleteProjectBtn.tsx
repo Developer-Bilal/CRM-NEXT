@@ -23,9 +23,7 @@ const DeleteProjectBtn = ({ id }: DeleteBtnProps) => {
           icon: "success",
         });
         axios
-          .delete(
-            `https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/projects/${id}`
-          )
+          .delete(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/projects/${id}`)
           .then(() => {
             console.log("Deleted");
             router.refresh();

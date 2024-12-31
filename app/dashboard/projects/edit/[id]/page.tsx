@@ -13,7 +13,7 @@ const EditProject = () => {
 
   useEffect(() => {
     axios
-      .get(`https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/projects/${id}`)
+      .get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/projects/${id}`)
       .then((res) => {
         console.log(res.data);
         setTitle(res.data.title);
@@ -35,10 +35,7 @@ const EditProject = () => {
     };
 
     axios
-      .put(
-        `https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/projects/${id}`,
-        data
-      )
+      .put(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/projects/${id}`, data)
       .then((res) => {
         console.log(res.data);
         router.push("/dashboard/projects");
