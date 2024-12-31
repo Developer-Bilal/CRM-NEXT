@@ -8,10 +8,9 @@ interface User {
 }
 
 const Users = async () => {
-  const res = await fetch(
-    "https://6767dad9c1de2e6421c86f85.mockapi.io/api/v1/users",
-    { cache: "no-store" }
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users`, {
+    cache: "no-store",
+  });
   const users = await res.json();
 
   return (
