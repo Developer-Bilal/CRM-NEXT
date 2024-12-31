@@ -14,24 +14,35 @@ export const getUsers = async (req, res) => {
 };
 
 // CREATE user
+
+// export const createUser = async (req, res) => {
+//   const { name, admin, email, password } = req.body;
+//   try {
+//     if (!name || !admin || !email || !password) {
+//       return res
+//         .status(400)
+//         .json({ message: "Please fill all fields properly" });
+//     }
+
+//     const salt = await bcrypt.genSalt(10);
+//     const hashedPass = await bcrypt.hash(password, salt);
+
+//     const user = await Users.create({
+//       name,
+//       admin,
+//       email,
+//       password: hashedPass,
+//     });
+//     return res.status(200).json({ message: "created sucessfully" });
+//   } catch (error) {
+//     console.log(error.message);
+//     return res.status(500).json({ message: error.message });
+//   }
+// };
+
 export const createUser = async (req, res) => {
-  const { name, admin, email, password } = req.body;
   try {
-    if (!name || !admin || !email || !password) {
-      return res
-        .status(400)
-        .json({ message: "Please fill all fields properly" });
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPass = await bcrypt.hash(password, salt);
-
-    const user = await Users.create({
-      name,
-      admin,
-      email,
-      password: hashedPass,
-    });
+    const user = await Users.create(req.body);
     return res.status(200).json({ message: "created sucessfully" });
   } catch (error) {
     console.log(error.message);
