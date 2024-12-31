@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 export const getUsers = async (req, res) => {
   try {
     const users = await Users.find({});
-    return res.status(200).json({ count: users.length, data: users });
+    return res.status(200).json(users);
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: error.message });
@@ -44,7 +44,7 @@ export const getUser = async (req, res) => {
   const { id } = req.params;
   try {
     const user = await Users.findById(id);
-    return res.status(200).json({ message: "Success!", data: user });
+    return res.status(200).json(user);
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: error.message });

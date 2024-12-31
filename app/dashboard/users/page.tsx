@@ -11,7 +11,8 @@ const Users = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users`, {
     cache: "no-store",
   });
-  const users = await res.json();
+  const data = await res.json();
+  const users = data.data;
 
   return (
     <div className="m-4">
