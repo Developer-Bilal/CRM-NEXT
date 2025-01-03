@@ -5,10 +5,18 @@ interface Client {
   id: string;
   name: string;
   email: string;
+  profilePhoto: string;
+  phone: string;
+  country: string;
+  source: string;
+  websiteURL: string;
+  linkedin: string;
+  date: string;
+  additionalInfo: string;
 }
 
 const Clients = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/clients`, {
     cache: "no-store",
   });
   const clients = await res.json();

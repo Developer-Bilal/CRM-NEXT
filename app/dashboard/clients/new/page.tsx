@@ -18,7 +18,7 @@ const CreateClient = () => {
     };
 
     axios
-      .post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users`, data)
+      .post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/clients`, data)
       .then((res) => {
         console.log(res.data);
         router.push("/dashboard/clients");

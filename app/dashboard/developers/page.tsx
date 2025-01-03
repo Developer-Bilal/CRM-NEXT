@@ -5,12 +5,25 @@ interface Developer {
   id: string;
   name: string;
   email: string;
+  role: string;
+  phone: string;
+  country: string;
+  source: string;
+  portfolioURL: string;
+  linkedin: string;
+  resumeFile: string;
+  profilePhoto: string;
+  date: string;
+  additionalInfo: string;
 }
 
 const Developers = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users`, {
-    cache: "no-store",
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/developers`,
+    {
+      cache: "no-store",
+    }
+  );
 
   const developers = await res.json();
 

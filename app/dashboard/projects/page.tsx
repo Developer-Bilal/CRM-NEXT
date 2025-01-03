@@ -6,6 +6,20 @@ interface Project {
   title: string;
   description: string;
   status: string;
+  client: string;
+  developer: string;
+  manager: string;
+  startDate: string;
+  deadline: string;
+  priorityLevel: string;
+  budget: string;
+  billing: string;
+  requirements: string;
+  milestones: string;
+  progressTracker: string;
+  notes: string;
+  relatedDocuments: string;
+  communicationHistory: string;
 }
 
 const Projects = async () => {

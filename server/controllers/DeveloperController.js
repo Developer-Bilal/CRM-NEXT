@@ -4,7 +4,7 @@ import { Developers } from "../models/DeveloperModel.js";
 export const getDevelopers = async (req, res) => {
   try {
     const developers = await Developers.find({});
-    return res.status(200).json({ count: developers.length, data: developers });
+    return res.status(200).json(developers);
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: error.message });
@@ -14,18 +14,18 @@ export const getDevelopers = async (req, res) => {
 // CREATE developer
 export const createDeveloper = async (req, res) => {
   const {
-    name,
-    email,
-    role,
-    phone,
-    country,
-    source,
-    portfolioURL,
-    linkedin,
-    resumeFile,
-    profilePhoto,
-    date,
-    additionalInfo,
+    name = null,
+    email = null,
+    role = null,
+    phone = null,
+    country = null,
+    source = null,
+    portfolioURL = null,
+    linkedin = null,
+    resumeFile = null,
+    profilePhoto = null,
+    date = null,
+    additionalInfo = null,
   } = req.body;
   try {
     if (!name || !email) {
@@ -60,7 +60,7 @@ export const getDeveloper = async (req, res) => {
   const { id } = req.params;
   try {
     const developer = await Developers.findById(id);
-    return res.status(200).json({ message: "Success!", data: developer });
+    return res.status(200).json(developer);
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: error.message });

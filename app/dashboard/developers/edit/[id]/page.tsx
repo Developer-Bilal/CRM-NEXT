@@ -12,7 +12,7 @@ const EditDeveloper = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users/${id}`)
+      .get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/developers/${id}`)
       .then((res) => {
         console.log(res.data);
         setName(res.data.name);
@@ -32,7 +32,7 @@ const EditDeveloper = () => {
     };
 
     axios
-      .put(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users/${id}`, data)
+      .put(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/developers/${id}`, data)
       .then((res) => {
         console.log(res.data);
         router.push("/dashboard/developers");

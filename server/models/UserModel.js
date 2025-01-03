@@ -6,13 +6,28 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    admin: {
-      type: Boolean,
-      required: true,
-    },
     email: {
       type: String,
       required: true,
+    },
+    isAdmin: {
+      type: Boolean,
+      required: true,
+    },
+    phone: {
+      type: String,
+    },
+    country: {
+      type: String,
+    },
+    profilePhoto: {
+      type: String,
+    },
+    linkedin: {
+      type: String,
+    },
+    additionalInfo: {
+      type: String,
     },
     password: {
       type: String,

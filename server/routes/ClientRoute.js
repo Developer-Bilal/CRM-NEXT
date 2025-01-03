@@ -9,14 +9,10 @@ import {
 
 const ClientRouter = Router();
 
-ClientRouter.get("/", getClients);
+ClientRouter.get("/", getClients).post("/", createClient);
 
-ClientRouter.get("/:id", getClient);
-
-ClientRouter.post("/create", createClient);
-
-ClientRouter.put("/update/:id", updateClient);
-
-ClientRouter.delete("/delete/:id", deleteClient);
+ClientRouter.get("/:id", getClient)
+  .patch("/:id", updateClient)
+  .delete("/:id", deleteClient);
 
 export default ClientRouter;

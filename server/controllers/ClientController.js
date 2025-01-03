@@ -4,7 +4,7 @@ import { Clients } from "../models/ClientModel.js";
 export const getClients = async (req, res) => {
   try {
     const clients = await Clients.find({});
-    return res.status(200).json({ count: clients.length, data: clients });
+    return res.status(200).json(clients);
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: error.message });
@@ -14,16 +14,16 @@ export const getClients = async (req, res) => {
 // CREATE client
 export const createClient = async (req, res) => {
   const {
-    name,
-    email,
-    profilePhoto,
-    phone,
-    country,
-    source,
-    websiteURL,
-    linkedin,
-    date,
-    additionalInfo,
+    name = null,
+    email = null,
+    profilePhoto = null,
+    phone = null,
+    country = null,
+    source = null,
+    websiteURL = null,
+    linkedin = null,
+    date = null,
+    additionalInfo = null,
   } = req.body;
   try {
     if (!name || !email) {
@@ -56,7 +56,7 @@ export const getClient = async (req, res) => {
   const { id } = req.params;
   try {
     const client = await Clients.findById(id);
-    return res.status(200).json({ message: "Success!", data: client });
+    return res.status(200).json(client);
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: error.message });

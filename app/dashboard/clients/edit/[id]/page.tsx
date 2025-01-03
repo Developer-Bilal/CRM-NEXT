@@ -12,7 +12,7 @@ const EditClient = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users/${id}`)
+      .get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/clients/${id}`)
       .then((res) => {
         console.log(res.data);
         setName(res.data.name);
@@ -32,7 +32,7 @@ const EditClient = () => {
     };
 
     axios
-      .put(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users/${id}`, data)
+      .put(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/clients/${id}`, data)
       .then((res) => {
         console.log(res.data);
         router.push("/dashboard/clients");

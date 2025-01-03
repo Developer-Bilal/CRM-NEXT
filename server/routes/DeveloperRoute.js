@@ -9,14 +9,10 @@ import {
 
 const DeveloperRoute = Router();
 
-DeveloperRoute.get("/", getDevelopers);
+DeveloperRoute.get("/", getDevelopers).post("/", createDeveloper);
 
-DeveloperRoute.get("/:id", getDeveloper);
-
-DeveloperRoute.post("/create", createDeveloper);
-
-DeveloperRoute.put("/update/:id", updateDeveloper);
-
-DeveloperRoute.delete("/delete/:id", deleteDeveloper);
+DeveloperRoute.get("/:id", getDeveloper)
+  .patch("/:id", updateDeveloper)
+  .delete("/:id", deleteDeveloper);
 
 export default DeveloperRoute;

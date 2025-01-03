@@ -18,7 +18,7 @@ const CreateDeveloper = () => {
     };
 
     axios
-      .post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users`, data)
+      .post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/developers`, data)
       .then((res) => {
         console.log(res.data);
         router.push("/dashboard/developers");

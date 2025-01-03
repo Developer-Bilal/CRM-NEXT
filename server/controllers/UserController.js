@@ -14,35 +14,41 @@ export const getUsers = async (req, res) => {
 };
 
 // CREATE user
-
-// export const createUser = async (req, res) => {
-//   const { name, admin, email, password } = req.body;
-//   try {
-//     if (!name || !admin || !email || !password) {
-//       return res
-//         .status(400)
-//         .json({ message: "Please fill all fields properly" });
-//     }
-
-//     const salt = await bcrypt.genSalt(10);
-//     const hashedPass = await bcrypt.hash(password, salt);
-
-//     const user = await Users.create({
-//       name,
-//       admin,
-//       email,
-//       password: hashedPass,
-//     });
-//     return res.status(200).json({ message: "created sucessfully" });
-//   } catch (error) {
-//     console.log(error.message);
-//     return res.status(500).json({ message: error.message });
-//   }
-// };
-
 export const createUser = async (req, res) => {
+  const {
+    name = null,
+    email = null,
+    isAdmin = false,
+    phone = null,
+    country = null,
+    profilePhoto = null,
+    linkedin = null,
+    additionalInfo = null,
+    password = null,
+  } = req.body;
   try {
-    const user = await Users.create(req.body);
+    if (!name || !isAdmin || !email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Please fill all fields properly" });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPass = await bcrypt.hash(password, salt);
+
+    const data = {
+      name,
+      isAdmin,
+      email,
+      phone,
+      country,
+      profilePhoto,
+      linkedin,
+      additionalInfo,
+      password: hashedPass,
+    };
+
+    const user = await Users.create(data);
     return res.status(200).json({ message: "created sucessfully" });
   } catch (error) {
     console.log(error.message);
@@ -64,16 +70,38 @@ export const getUser = async (req, res) => {
 
 // UPDATE user
 export const updateUser = async (req, res) => {
-  const { name, admin, email } = req.body;
+  const {
+    name,
+    email,
+    isAdmin,
+    phone,
+    country,
+    profilePhoto,
+    linkedin,
+    additionalInfo,
+  } = req.body;
+
   const { id } = req.params;
+
   try {
-    if (!name || !admin || !email) {
+    if (!name || !isAdmin || !email) {
       return res
         .status(400)
         .json({ message: "Please fill all fields properly" });
     }
 
-    const user = await Users.findByIdAndUpdate(id, { name, admin, email });
+    const data = {
+      name,
+      email,
+      isAdmin,
+      phone,
+      country,
+      profilePhoto,
+      linkedin,
+      additionalInfo,
+    };
+
+    const user = await Users.findByIdAndUpdate(id, data);
     return res.status(200).json({ message: "Success!" });
   } catch (error) {
     console.log(error.message);
