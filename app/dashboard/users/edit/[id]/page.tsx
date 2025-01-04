@@ -8,6 +8,12 @@ const EditUser = () => {
   const { id } = useParams();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [isAdmin, setIsAdmin] = useState("false");
+  const [phone, setPhone] = useState("");
+  const [country, setCountry] = useState("");
+  const [profilePhoto, setProfilePhoto] = useState("");
+  const [linkedin, setLinkedin] = useState("");
+  const [additionalInfo, setAdditionalInfo] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -17,6 +23,12 @@ const EditUser = () => {
         console.log(res.data);
         setName(res.data.name);
         setEmail(res.data.email);
+        setIsAdmin(res.data.isAdmin.toString());
+        setPhone(res.data.phone);
+        setCountry(res.data.country);
+        setProfilePhoto(res.data.profilePhoto);
+        setLinkedin(res.data.linkedin);
+        setAdditionalInfo(res.data.additionalInfo);
       })
       .catch((err) => {
         console.log(err);
@@ -29,10 +41,16 @@ const EditUser = () => {
     const data = {
       name,
       email,
+      isAdmin,
+      phone,
+      country,
+      profilePhoto,
+      linkedin,
+      additionalInfo,
     };
 
     axios
-      .put(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users/${id}`, data)
+      .patch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users/${id}`, data)
       .then((res) => {
         console.log(res.data);
         router.push("/dashboard/users");
@@ -70,6 +88,75 @@ const EditUser = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            isAdmin
+          </label>
+          <select
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            value={isAdmin}
+            onChange={(e) => setIsAdmin(e.target.value)}
+          >
+            <option value="">Select an option</option>
+            <option value="true">True</option>
+            <option value="false">False</option>
+          </select>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Phone
+          </label>
+          <input
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Country
+          </label>
+          <input
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Profile Photo
+          </label>
+          <input
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            value={profilePhoto}
+            onChange={(e) => setProfilePhoto(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            LinkedIn
+          </label>
+          <input
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            value={linkedin}
+            onChange={(e) => setLinkedin(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Additional Info
+          </label>
+          <input
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            value={additionalInfo}
+            onChange={(e) => setAdditionalInfo(e.target.value)}
+            required
           />
         </div>
         <button

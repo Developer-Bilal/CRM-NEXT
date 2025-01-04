@@ -21,8 +21,23 @@ const EditProject = () => {
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("");
   const [client, setClient] = useState("");
-  const [clients, setClients] = useState([]);
   const [developer, setDeveloper] = useState("");
+  const [manager, setManager] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [deadline, setDeadline] = useState("");
+  const [priorityLevel, setPriorityLevel] = useState("");
+  const [budget, setBudget] = useState("");
+  const [billing, setBilling] = useState("");
+  const [requirements, setRequirements] = useState("");
+  const [milestones, setMilestones] = useState("");
+  const [progressTracker, setProgressTracker] = useState("");
+  const [notes, setNotes] = useState("");
+  const [relatedDocuments, setRelatedDocuments] = useState("");
+  const [communicationHistory, setCommunicationHistory] = useState("");
+  // pre
+  // const [client, setClient] = useState("");
+  // const [developer, setDeveloper] = useState("");
+  const [clients, setClients] = useState([]);
   const [developers, setDevelopers] = useState([]);
   const router = useRouter();
 
@@ -36,6 +51,18 @@ const EditProject = () => {
         setStatus(res.data.status);
         setClient(res.data.client);
         setDeveloper(res.data.developer);
+        setManager(res.data.manager);
+        setStartDate(res.data.startDate);
+        setDeadline(res.data.deadline);
+        setPriorityLevel(res.data.priorityLevel);
+        setBudget(res.data.budget);
+        setBilling(res.data.billing);
+        setRequirements(res.data.requirements);
+        setMilestones(res.data.milestones);
+        setProgressTracker(res.data.progressTracker);
+        setNotes(res.data.notes);
+        setRelatedDocuments(res.data.relatedDocuments);
+        setCommunicationHistory(res.data.communicationHistory);
       })
       .catch((err) => {
         console.log(err);
@@ -67,6 +94,18 @@ const EditProject = () => {
       status,
       client,
       developer,
+      manager,
+      startDate,
+      deadline,
+      priorityLevel,
+      budget,
+      billing,
+      requirements,
+      milestones,
+      progressTracker,
+      notes,
+      relatedDocuments,
+      communicationHistory,
     };
 
     axios
@@ -155,6 +194,138 @@ const EditProject = () => {
                 </option>
               ))}
           </select>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Manager
+          </label>
+          <input
+            value={status}
+            onChange={(e) => setManager(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Start Date
+          </label>
+          <input
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Deadline
+          </label>
+          <input
+            value={deadline}
+            onChange={(e) => setDeadline(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Priority Level
+          </label>
+          <input
+            value={priorityLevel}
+            onChange={(e) => setPriorityLevel(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Budget
+          </label>
+          <input
+            value={budget}
+            onChange={(e) => setBudget(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Billing
+          </label>
+          <input
+            value={billing}
+            onChange={(e) => setBilling(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Requirements
+          </label>
+          <input
+            value={requirements}
+            onChange={(e) => setRequirements(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Milestones
+          </label>
+          <input
+            value={milestones}
+            onChange={(e) => setMilestones(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Progress Tracker
+          </label>
+          <input
+            value={progressTracker}
+            onChange={(e) => setProgressTracker(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Notes
+          </label>
+          <input
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Related Documents
+          </label>
+          <input
+            value={relatedDocuments}
+            onChange={(e) => setRelatedDocuments(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            CommunicationHistory
+          </label>
+          <input
+            value={communicationHistory}
+            onChange={(e) => setCommunicationHistory(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
         </div>
         <button
           type="submit"

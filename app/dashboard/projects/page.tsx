@@ -43,7 +43,6 @@ const Projects = async () => {
         <thead>
           <tr className="w-full bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
             <th className="py-3 px-6 text-left w-1/3">Title</th>
-            <th className="py-3 px-6 text-left w-1/3">Description</th>
             <th className="py-3 px-6 text-left w-1/3">Status</th>
             <th className="py-3 px-6 text-left w-1/3">Client</th>
             <th className="py-3 px-6 text-left w-1/3">Developer</th>
@@ -57,7 +56,6 @@ const Projects = async () => {
               className="border-b border-gray-200 hover:bg-gray-100"
             >
               <td className="py-3 px-6">{project.title}</td>
-              <td className="py-3 px-6">{project.description}</td>
               <td className="py-3 px-6">{project.status}</td>
               <td className="py-3 px-6">{project.client}</td>
               <td className="py-3 px-6">{project.developer}</td>
@@ -65,6 +63,11 @@ const Projects = async () => {
                 <Link href={`/dashboard/projects/edit/${project._id}`}>
                   <button className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700">
                     Edit
+                  </button>
+                </Link>
+                <Link href={`/dashboard/projects/${project._id}`}>
+                  <button className="bg-pink-500 text-white py-1 px-3 rounded hover:bg-pink-700">
+                    Details
                   </button>
                 </Link>
                 <DeleteProjectBtn id={project._id} />

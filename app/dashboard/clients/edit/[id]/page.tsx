@@ -8,6 +8,14 @@ const EditClient = () => {
   const { id } = useParams();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [profilePhoto, setProfilePhoto] = useState("");
+  const [phone, setPhone] = useState("");
+  const [country, setCountry] = useState("");
+  const [source, setSource] = useState("");
+  const [websiteURL, setWebsiteURL] = useState("");
+  const [linkedin, setLinkedin] = useState("");
+  const [date, setDate] = useState("");
+  const [additionalInfo, setAdditionalInfo] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -15,8 +23,16 @@ const EditClient = () => {
       .get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/clients/${id}`)
       .then((res) => {
         console.log(res.data);
-        setName(res.data.name);
-        setEmail(res.data.email);
+        setName(res.data.name || "");
+        setEmail(res.data.email || "");
+        setProfilePhoto(res.data.profilePhoto || "");
+        setPhone(res.data.phone || "");
+        setCountry(res.data.country || "");
+        setSource(res.data.source || "");
+        setWebsiteURL(res.data.websiteURL || "");
+        setLinkedin(res.data.linkedin || "");
+        setDate(res.data.date || "");
+        setAdditionalInfo(res.data.additionalInfo || "");
       })
       .catch((err) => {
         console.log(err);
@@ -29,10 +45,18 @@ const EditClient = () => {
     const data = {
       name,
       email,
+      profilePhoto,
+      phone,
+      country,
+      source,
+      websiteURL,
+      linkedin,
+      date,
+      additionalInfo,
     };
 
     axios
-      .put(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/clients/${id}`, data)
+      .patch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/clients/${id}`, data)
       .then((res) => {
         console.log(res.data);
         router.push("/dashboard/clients");
@@ -70,6 +94,94 @@ const EditClient = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            profilePhoto
+          </label>
+          <input
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            value={profilePhoto}
+            onChange={(e) => setProfilePhoto(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            phone
+          </label>
+          <input
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            country
+          </label>
+          <input
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            source
+          </label>
+          <input
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            value={source}
+            onChange={(e) => setSource(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            websiteURL
+          </label>
+          <input
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            value={websiteURL}
+            onChange={(e) => setWebsiteURL(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            linkedin
+          </label>
+          <input
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            value={linkedin}
+            onChange={(e) => setLinkedin(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            date
+          </label>
+          <input
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            additionalInfo
+          </label>
+          <input
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            value={additionalInfo}
+            onChange={(e) => setAdditionalInfo(e.target.value)}
+            required
           />
         </div>
         <button
