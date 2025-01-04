@@ -2,7 +2,7 @@ import DeleteBtn from "@/app/components/dashboard/DeleteBtn";
 import Link from "next/link";
 
 interface Developer {
-  id: string;
+  _id: string;
   name: string;
   email: string;
   role: string;
@@ -47,18 +47,23 @@ const Developers = async () => {
         <tbody className="text-gray-600 text-sm font-light">
           {developers.map((developer: Developer) => (
             <tr
-              key={developer.id}
+              key={developer._id}
               className="border-b border-gray-200 hover:bg-gray-100"
             >
               <td className="py-3 px-6">{developer.name}</td>
               <td className="py-3 px-6">{developer.email}</td>
               <td className="py-3 px-6 flex gap-2">
-                <Link href={`/dashboard/developers/edit/${developer.id}`}>
+                <Link href={`/dashboard/developers/edit/${developer._id}`}>
                   <button className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700">
                     Edit
                   </button>
                 </Link>
-                <DeleteBtn id={developer.id} />
+                <Link href={`/dashboard/developers/${developer._id}`}>
+                  <button className="bg-pink-500 text-white py-1 px-3 rounded hover:bg-pink-700">
+                    Details
+                  </button>
+                </Link>
+                <DeleteBtn id={developer._id} />
               </td>
             </tr>
           ))}

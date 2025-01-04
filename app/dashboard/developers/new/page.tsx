@@ -7,6 +7,16 @@ import React, { FormEvent, useState } from "react";
 const CreateDeveloper = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
+  const [phone, setPhone] = useState("");
+  const [country, setCountry] = useState("");
+  const [source, setSource] = useState("");
+  const [portfolioURL, setPortfolioURL] = useState("");
+  const [linkedin, setLinkedin] = useState("");
+  const [resumeFile, setResumeFile] = useState("");
+  const [profilePhoto, setProfilePhoto] = useState("");
+  const [date, setDate] = useState("");
+  const [additionalInfo, setAdditionalInfo] = useState("");
   const router = useRouter();
 
   const handleSubmit = (e: FormEvent) => {
@@ -15,6 +25,16 @@ const CreateDeveloper = () => {
     const data = {
       name,
       email,
+      role,
+      phone,
+      country,
+      source,
+      portfolioURL,
+      linkedin,
+      resumeFile,
+      profilePhoto,
+      date,
+      additionalInfo,
     };
 
     axios
@@ -52,6 +72,116 @@ const CreateDeveloper = () => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Role
+          </label>
+          <input
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Phone
+          </label>
+          <input
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Country
+          </label>
+          <input
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Source
+          </label>
+          <input
+            value={source}
+            onChange={(e) => setSource(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Portfolio URL
+          </label>
+          <input
+            value={portfolioURL}
+            onChange={(e) => setPortfolioURL(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            LinkedIn
+          </label>
+          <input
+            value={linkedin}
+            onChange={(e) => setLinkedin(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Resume File
+          </label>
+          <input
+            value={resumeFile}
+            onChange={(e) => setResumeFile(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Profile Photo
+          </label>
+          <input
+            value={profilePhoto}
+            onChange={(e) => setProfilePhoto(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Date
+          </label>
+          <input
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Additional Info
+          </label>
+          <input
+            value={additionalInfo}
+            onChange={(e) => setAdditionalInfo(e.target.value)}
             required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
           />

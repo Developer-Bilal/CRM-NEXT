@@ -8,6 +8,16 @@ const EditDeveloper = () => {
   const { id } = useParams();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
+  const [phone, setPhone] = useState("");
+  const [country, setCountry] = useState("");
+  const [source, setSource] = useState("");
+  const [portfolioURL, setPortfolioURL] = useState("");
+  const [linkedin, setLinkedin] = useState("");
+  const [resumeFile, setResumeFile] = useState("");
+  const [profilePhoto, setProfilePhoto] = useState("");
+  const [date, setDate] = useState("");
+  const [additionalInfo, setAdditionalInfo] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -15,8 +25,18 @@ const EditDeveloper = () => {
       .get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/developers/${id}`)
       .then((res) => {
         console.log(res.data);
-        setName(res.data.name);
-        setEmail(res.data.email);
+        setName(res.data.name || "");
+        setEmail(res.data.email || "");
+        setRole(res.data.role || "");
+        setPhone(res.data.phone || "");
+        setCountry(res.data.country || "");
+        setSource(res.data.source || "");
+        setPortfolioURL(res.data.portfolioURL || "");
+        setLinkedin(res.data.linkedin || "");
+        setResumeFile(res.data.resumeFile || "");
+        setProfilePhoto(res.data.profilePhoto || "");
+        setDate(res.data.date || "");
+        setAdditionalInfo(res.data.additionalInfo || "");
       })
       .catch((err) => {
         console.log(err);
@@ -29,10 +49,20 @@ const EditDeveloper = () => {
     const data = {
       name,
       email,
+      role,
+      phone,
+      country,
+      source,
+      portfolioURL,
+      linkedin,
+      resumeFile,
+      profilePhoto,
+      date,
+      additionalInfo,
     };
 
     axios
-      .put(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/developers/${id}`, data)
+      .patch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/developers/${id}`, data)
       .then((res) => {
         console.log(res.data);
         router.push("/dashboard/developers");
@@ -68,6 +98,116 @@ const EditDeveloper = () => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Role
+          </label>
+          <input
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Phone
+          </label>
+          <input
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Country
+          </label>
+          <input
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Source
+          </label>
+          <input
+            value={source}
+            onChange={(e) => setSource(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Portfolio URL
+          </label>
+          <input
+            value={portfolioURL}
+            onChange={(e) => setPortfolioURL(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            LinkedIn
+          </label>
+          <input
+            value={linkedin}
+            onChange={(e) => setLinkedin(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Resume File
+          </label>
+          <input
+            value={resumeFile}
+            onChange={(e) => setResumeFile(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Profile Photo
+          </label>
+          <input
+            value={profilePhoto}
+            onChange={(e) => setProfilePhoto(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Date
+          </label>
+          <input
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Additional Info
+          </label>
+          <input
+            value={additionalInfo}
+            onChange={(e) => setAdditionalInfo(e.target.value)}
             required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
           />

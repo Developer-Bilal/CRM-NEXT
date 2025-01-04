@@ -14,18 +14,18 @@ export const getDevelopers = async (req, res) => {
 // CREATE developer
 export const createDeveloper = async (req, res) => {
   const {
-    name = null,
-    email = null,
-    role = null,
-    phone = null,
-    country = null,
-    source = null,
-    portfolioURL = null,
-    linkedin = null,
-    resumeFile = null,
-    profilePhoto = null,
-    date = null,
-    additionalInfo = null,
+    name = "",
+    email = "",
+    role = "",
+    phone = "",
+    country = "",
+    source = "",
+    portfolioURL = "",
+    linkedin = "",
+    resumeFile = "",
+    profilePhoto = "",
+    date = "",
+    additionalInfo = "",
   } = req.body;
   try {
     if (!name || !email) {

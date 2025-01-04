@@ -35,14 +35,14 @@ const Clients = async () => {
           <tr className="w-full bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
             <th className="py-3 px-6 text-left w-1/3">Name</th>
             <th className="py-3 px-6 text-left w-1/3">Email</th>
-            <th className="py-3 px-6 text-left w-1/3">Profile Photo</th>
+            {/* <th className="py-3 px-6 text-left w-1/3">Profile Photo</th>
             <th className="py-3 px-6 text-left w-1/3">Phone</th>
             <th className="py-3 px-6 text-left w-1/3">country</th>
             <th className="py-3 px-6 text-left w-1/3">Source</th>
             <th className="py-3 px-6 text-left w-1/3">websiteURL</th>
             <th className="py-3 px-6 text-left w-1/3">linkedin</th>
             <th className="py-3 px-6 text-left w-1/3">date</th>
-            <th className="py-3 px-6 text-left w-1/3">additionalInfo</th>
+            <th className="py-3 px-6 text-left w-1/3">additionalInfo</th> */}
             <th className="py-3 px-6 text-left w-1/3">Actions</th>
           </tr>
         </thead>
@@ -54,18 +54,23 @@ const Clients = async () => {
             >
               <td className="py-3 px-6">{client.name}</td>
               <td className="py-3 px-6">{client.email}</td>
-              <td className="py-3 px-6">{client.profilePhoto}</td>
+              {/* <td className="py-3 px-6">{client.profilePhoto}</td>
               <td className="py-3 px-6">{client.phone}</td>
               <td className="py-3 px-6">{client.country}</td>
               <td className="py-3 px-6">{client.source}</td>
               <td className="py-3 px-6">{client.websiteURL}</td>
               <td className="py-3 px-6">{client.linkedin}</td>
               <td className="py-3 px-6">{client.date}</td>
-              <td className="py-3 px-6">{client.additionalInfo}</td>
+              <td className="py-3 px-6">{client.additionalInfo}</td> */}
               <td className="py-3 px-6 flex gap-2">
                 <Link href={`/dashboard/clients/edit/${client._id}`}>
                   <button className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700">
                     Edit
+                  </button>
+                </Link>
+                <Link href={`/dashboard/clients/${client._id}`}>
+                  <button className="bg-pink-500 text-white py-1 px-3 rounded hover:bg-pink-700">
+                    Details
                   </button>
                 </Link>
                 <DeleteBtn id={client._id} />

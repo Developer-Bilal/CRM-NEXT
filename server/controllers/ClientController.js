@@ -14,16 +14,16 @@ export const getClients = async (req, res) => {
 // CREATE client
 export const createClient = async (req, res) => {
   const {
-    name = null,
-    email = null,
-    profilePhoto = null,
-    phone = null,
-    country = null,
-    source = null,
-    websiteURL = null,
-    linkedin = null,
-    date = null,
-    additionalInfo = null,
+    name = "",
+    email = "",
+    profilePhoto = "",
+    phone = "",
+    country = "",
+    source = "",
+    websiteURL = "",
+    linkedin = "",
+    date = "",
+    additionalInfo = "",
   } = req.body;
   try {
     if (!name || !email) {

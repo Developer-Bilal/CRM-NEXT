@@ -5,57 +5,47 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-interface Project {
+interface Developer {
   _id: string;
-  title: string;
-  description: string;
-  status: string;
-  client: string;
-  developer: string;
-  manager: string;
-  startDate: string;
-  deadline: string;
-  priorityLevel: string;
-  budget: string;
-  billing: string;
-  requirements: string;
-  milestones: string;
-  progressTracker: string;
-  notes: string;
-  relatedDocuments: string;
-  communicationHistory: string;
+  name: string;
+  email: string;
+  role: string;
+  phone: string;
+  country: string;
+  source: string;
+  portfolioURL: string;
+  linkedin: string;
+  resumeFile: string;
+  profilePhoto: string;
+  date: string;
+  additionalInfo: string;
 }
 
-const ViewProject = () => {
+const ViewDeveloper = () => {
   const { id } = useParams();
-  const [project, setPoject] = useState<Project>({
+  const [Developer, setDeveloper] = useState<Developer>({
     _id: "",
-    title: "",
-    description: "",
-    status: "",
-    client: "",
-    developer: "",
-    manager: "",
-    startDate: "",
-    deadline: "",
-    priorityLevel: "",
-    budget: "",
-    billing: "",
-    requirements: "",
-    milestones: "",
-    progressTracker: "",
-    notes: "",
-    relatedDocuments: "",
-    communicationHistory: "",
+    name: "",
+    email: "",
+    role: "",
+    phone: "",
+    country: "",
+    source: "",
+    portfolioURL: "",
+    linkedin: "",
+    resumeFile: "",
+    profilePhoto: "",
+    date: "",
+    additionalInfo: "",
   });
   const router = useRouter();
 
   useEffect(() => {
     axios
-      .get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/projects/${id}`)
+      .get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/Developers/${id}`)
       .then((res) => {
         console.log(res.data);
-        setPoject(res.data);
+        setDeveloper(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -65,145 +55,105 @@ const ViewProject = () => {
   return (
     <div className="m-4">
       <div className="max-w-md mx-auto p-4 bg-white rounded shadow">
-        <h2 className="text-lg font-semibold mb-4">Project Details</h2>
+        <h2 className="text-lg font-semibold mb-4">Developer Details</h2>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            Title
+            Name
           </label>
           <div className="mt-1 block w-full p-2 border border-gray-300 rounded">
-            {project.title}
+            {Developer.name}
           </div>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            Description
+            Email
           </label>
           <div className="mt-1 block w-full p-2 border border-gray-300 rounded">
-            {project.description}
+            {Developer.email}
           </div>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            Status
+            Role
           </label>
           <div className="mt-1 block w-full p-2 border border-gray-300 rounded">
-            {project.status}
+            {Developer.role}
           </div>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            Client
+            Phone
           </label>
           <div className="mt-1 block w-full p-2 border border-gray-300 rounded">
-            {project.client}
+            {Developer.phone}
           </div>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            Developer
+            Country
           </label>
           <div className="mt-1 block w-full p-2 border border-gray-300 rounded">
-            {project.developer}
+            {Developer.country}
           </div>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            Manager
+            Source
           </label>
           <div className="mt-1 block w-full p-2 border border-gray-300 rounded">
-            {project.manager}
+            {Developer.source}
           </div>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            Start Date
+            Portfolio URL
           </label>
           <div className="mt-1 block w-full p-2 border border-gray-300 rounded">
-            {project.startDate}
+            {Developer.portfolioURL}
           </div>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            Deadline
+            LinkedIn
           </label>
           <div className="mt-1 block w-full p-2 border border-gray-300 rounded">
-            {project.deadline}
+            {Developer.linkedin}
           </div>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            Priority Level
+            Resume File
           </label>
           <div className="mt-1 block w-full p-2 border border-gray-300 rounded">
-            {project.priorityLevel}
+            {Developer.resumeFile}
           </div>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            Budget
+            Profile Photo
           </label>
           <div className="mt-1 block w-full p-2 border border-gray-300 rounded">
-            {project.budget}
+            {Developer.profilePhoto}
           </div>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            Billing
+            Date
           </label>
           <div className="mt-1 block w-full p-2 border border-gray-300 rounded">
-            {project.billing}
+            {Developer.date}
           </div>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            Requirements
+            Additional Info
           </label>
           <div className="mt-1 block w-full p-2 border border-gray-300 rounded">
-            {project.requirements}
-          </div>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Milestones
-          </label>
-          <div className="mt-1 block w-full p-2 border border-gray-300 rounded">
-            {project.milestones}
-          </div>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Progress Tracker
-          </label>
-          <div className="mt-1 block w-full p-2 border border-gray-300 rounded">
-            {project.progressTracker}
-          </div>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Notes
-          </label>
-          <div className="mt-1 block w-full p-2 border border-gray-300 rounded">
-            {project.notes}
-          </div>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Related Documents
-          </label>
-          <div className="mt-1 block w-full p-2 border border-gray-300 rounded">
-            {project.relatedDocuments}
-          </div>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Communication History
-          </label>
-          <div className="mt-1 block w-full p-2 border border-gray-300 rounded">
-            {project.communicationHistory}
+            {Developer.additionalInfo}
           </div>
         </div>
         <Link
-          href={"/dashboard/projects/"}
+          href={"/dashboard/developers/"}
           className="w-full py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700"
         >
           Back
@@ -213,4 +163,4 @@ const ViewProject = () => {
   );
 };
 
-export default ViewProject;
+export default ViewDeveloper;

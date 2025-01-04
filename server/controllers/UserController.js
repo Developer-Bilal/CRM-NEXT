@@ -16,15 +16,15 @@ export const getUsers = async (req, res) => {
 // CREATE user
 export const createUser = async (req, res) => {
   const {
-    name = null,
-    email = null,
+    name = "",
+    email = "",
     isAdmin = false,
-    phone = null,
-    country = null,
-    profilePhoto = null,
-    linkedin = null,
-    additionalInfo = null,
-    password = null,
+    phone = "",
+    country = "",
+    profilePhoto = "",
+    linkedin = "",
+    additionalInfo = "",
+    password = "",
   } = req.body;
   try {
     if (!name || !isAdmin || !email || !password) {

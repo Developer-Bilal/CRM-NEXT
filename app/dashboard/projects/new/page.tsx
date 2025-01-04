@@ -2,8 +2,19 @@
 
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
+interface arrayClient {
+  _id: string;
+  name: string;
+  email: string;
+}
+
+interface arrayDeveloper {
+  _id: string;
+  name: string;
+  email: string;
+}
 const CreateProject = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -23,6 +34,27 @@ const CreateProject = () => {
   const [relatedDocuments, setRelatedDocuments] = useState("");
   const [communicationHistory, setCommunicationHistory] = useState("");
   const router = useRouter();
+  //
+  const [clients, setClients] = useState([]);
+  const [developers, setDevelopers] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/clients`)
+      .then((res) => {
+        console.log(res.data);
+        setClients(res.data);
+      })
+      .catch((err) => console.log(err));
+
+    axios
+      .get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/developers`)
+      .then((res) => {
+        console.log(res.data);
+        setDevelopers(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -101,23 +133,37 @@ const CreateProject = () => {
           <label className="block text-sm font-medium text-gray-700">
             Client
           </label>
-          <input
+          <select
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
             value={client}
             onChange={(e) => setClient(e.target.value)}
-            required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
-          />
+          >
+            <option value=""></option>
+            {clients &&
+              clients.map((arrayclient: arrayClient) => (
+                <option key={arrayclient._id} value={arrayclient.name}>
+                  {arrayclient.name}
+                </option>
+              ))}
+          </select>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Developer
           </label>
-          <input
+          <select
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
             value={developer}
             onChange={(e) => setDeveloper(e.target.value)}
-            required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
-          />
+          >
+            <option value=""></option>
+            {developers &&
+              developers.map((arrayDeveloper: arrayDeveloper) => (
+                <option key={arrayDeveloper._id} value={arrayDeveloper.name}>
+                  {arrayDeveloper.name}
+                </option>
+              ))}
+          </select>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
