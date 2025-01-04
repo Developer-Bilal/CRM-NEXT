@@ -2,7 +2,7 @@ import DeleteProjectBtn from "@/app/components/dashboard/projects/DeleteProjectB
 import Link from "next/link";
 
 interface Project {
-  id: string;
+  _id: string;
   title: string;
   description: string;
   status: string;
@@ -45,25 +45,29 @@ const Projects = async () => {
             <th className="py-3 px-6 text-left w-1/3">Title</th>
             <th className="py-3 px-6 text-left w-1/3">Description</th>
             <th className="py-3 px-6 text-left w-1/3">Status</th>
+            <th className="py-3 px-6 text-left w-1/3">Client</th>
+            <th className="py-3 px-6 text-left w-1/3">Developer</th>
             <th className="py-3 px-6 text-left w-1/3">Actions</th>
           </tr>
         </thead>
         <tbody className="text-gray-600 text-sm font-light">
           {projects.map((project: Project) => (
             <tr
-              key={project.id}
+              key={project._id}
               className="border-b border-gray-200 hover:bg-gray-100"
             >
               <td className="py-3 px-6">{project.title}</td>
               <td className="py-3 px-6">{project.description}</td>
               <td className="py-3 px-6">{project.status}</td>
+              <td className="py-3 px-6">{project.client}</td>
+              <td className="py-3 px-6">{project.developer}</td>
               <td className="py-3 px-6 flex gap-2">
-                <Link href={`/dashboard/projects/edit/${project.id}`}>
+                <Link href={`/dashboard/projects/edit/${project._id}`}>
                   <button className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700">
                     Edit
                   </button>
                 </Link>
-                <DeleteProjectBtn id={project.id} />
+                <DeleteProjectBtn id={project._id} />
               </td>
             </tr>
           ))}

@@ -4,25 +4,58 @@ import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 
+interface arrayClient {
+  _id: string;
+  name: string;
+  email: string;
+}
+
+interface arrayDeveloper {
+  _id: string;
+  name: string;
+  email: string;
+}
 const EditProject = () => {
   const { id } = useParams();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("");
+  const [client, setClient] = useState("");
+  const [clients, setClients] = useState([]);
+  const [developer, setDeveloper] = useState("");
+  const [developers, setDevelopers] = useState([]);
   const router = useRouter();
 
   useEffect(() => {
     axios
       .get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/projects/${id}`)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setTitle(res.data.title);
         setDescription(res.data.description);
         setStatus(res.data.status);
+        setClient(res.data.client);
+        setDeveloper(res.data.developer);
       })
       .catch((err) => {
         console.log(err);
       });
+
+    axios
+      .get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/clients`)
+      .then((res) => {
+        console.log(res.data);
+        setClients(res.data);
+      })
+      .catch((err) => console.log(err));
+
+    axios
+      .get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/developers`)
+      .then((res) => {
+        console.log(res.data);
+        setDevelopers(res.data);
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   const handleSubmit = (e: FormEvent) => {
@@ -32,10 +65,12 @@ const EditProject = () => {
       title,
       description,
       status,
+      client,
+      developer,
     };
 
     axios
-      .put(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/projects/${id}`, data)
+      .patch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/projects/${id}`, data)
       .then((res) => {
         console.log(res.data);
         router.push("/dashboard/projects");
@@ -84,6 +119,42 @@ const EditProject = () => {
             required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
           />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Client
+          </label>
+          <select
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            value={client}
+            onChange={(e) => setClient(e.target.value)}
+          >
+            <option value=""></option>
+            {clients &&
+              clients.map((arrayclient: arrayClient) => (
+                <option key={arrayclient._id} value={arrayclient.name}>
+                  {arrayclient.name}
+                </option>
+              ))}
+          </select>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Developer
+          </label>
+          <select
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            value={developer}
+            onChange={(e) => setDeveloper(e.target.value)}
+          >
+            <option value=""></option>
+            {developers &&
+              developers.map((arrayDeveloper: arrayDeveloper) => (
+                <option key={arrayDeveloper._id} value={arrayDeveloper.name}>
+                  {arrayDeveloper.name}
+                </option>
+              ))}
+          </select>
         </div>
         <button
           type="submit"
