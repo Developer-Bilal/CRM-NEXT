@@ -4,6 +4,8 @@ import SignOut from "./components/SignOut";
 import { getServerSession } from "next-auth";
 import { options } from "./api/auth/[...nextauth]/options";
 
+import { Button } from "@/components/ui/button";
+
 export default async function Home() {
   const session = await getServerSession(options);
   console.log(session);
@@ -21,6 +23,7 @@ export default async function Home() {
           <button className="bg-red-400 px-4 py-2 rounded">Dashboard</button>
         </Link>
       </div>
+      <Button>Button</Button>
       <div className="flex gap-4">{session ? <SignOut /> : <SignIn />}</div>
     </div>
   );

@@ -4,6 +4,8 @@ import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 
+import { DatePicker } from "@/components/DatePicker";
+
 interface arrayClient {
   _id: string;
   name: string;
@@ -23,8 +25,8 @@ const EditProject = () => {
   const [client, setClient] = useState("");
   const [developer, setDeveloper] = useState("");
   const [manager, setManager] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [deadline, setDeadline] = useState("");
+  const [startDate, setStartDate] = useState<Date | undefined>(new Date());
+  const [deadline, setDeadline] = useState<Date | undefined>(new Date());
   const [priorityLevel, setPriorityLevel] = useState("");
   const [budget, setBudget] = useState("");
   const [billing, setBilling] = useState("");
@@ -40,6 +42,7 @@ const EditProject = () => {
   const [clients, setClients] = useState([]);
   const [developers, setDevelopers] = useState([]);
   const router = useRouter();
+  // const [selected, setSelected] = useState<Date>();
 
   useEffect(() => {
     axios
@@ -152,12 +155,16 @@ const EditProject = () => {
           <label className="block text-sm font-medium text-gray-700">
             Status
           </label>
-          <input
+          <select
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
-          />
+          >
+            <option value="">Select an option</option>
+            <option value="Planned">Planned</option>
+            <option value="In-Progress">In-Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
@@ -168,7 +175,7 @@ const EditProject = () => {
             value={client}
             onChange={(e) => setClient(e.target.value)}
           >
-            <option value=""></option>
+            <option value="">Select an option</option>
             {clients &&
               clients.map((arrayclient: arrayClient) => (
                 <option key={arrayclient._id} value={arrayclient.name}>
@@ -186,7 +193,7 @@ const EditProject = () => {
             value={developer}
             onChange={(e) => setDeveloper(e.target.value)}
           >
-            <option value=""></option>
+            <option value="">Select an option</option>
             {developers &&
               developers.map((arrayDeveloper: arrayDeveloper) => (
                 <option key={arrayDeveloper._id} value={arrayDeveloper.name}>
@@ -199,45 +206,47 @@ const EditProject = () => {
           <label className="block text-sm font-medium text-gray-700">
             Manager
           </label>
-          <input
-            value={status}
-            onChange={(e) => setManager(e.target.value)}
-            required
+          <select
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
-          />
+            value={manager}
+            onChange={(e) => setManager(e.target.value)}
+          >
+            <option value="">Select an option</option>
+            {developers &&
+              developers.map((arrayDeveloper: arrayDeveloper) => (
+                <option key={arrayDeveloper._id} value={arrayDeveloper.name}>
+                  {arrayDeveloper.name}
+                </option>
+              ))}
+          </select>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Start Date
           </label>
-          <input
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
-          />
+          {/* date picker */}
+          <DatePicker date={startDate} setDate={setStartDate} />
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Deadline
           </label>
-          <input
-            value={deadline}
-            onChange={(e) => setDeadline(e.target.value)}
-            required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
-          />
+          <DatePicker date={deadline} setDate={setDeadline} />
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Priority Level
           </label>
-          <input
+          <select
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
             value={priorityLevel}
             onChange={(e) => setPriorityLevel(e.target.value)}
-            required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
-          />
+          >
+            <option value="">Select an option</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
@@ -254,12 +263,16 @@ const EditProject = () => {
           <label className="block text-sm font-medium text-gray-700">
             Billing
           </label>
-          <input
+          <select
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
             value={billing}
             onChange={(e) => setBilling(e.target.value)}
-            required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
-          />
+          >
+            <option value="">Select an option</option>
+            <option value="Hourly">Hourly</option>
+            <option value="Fixed">Fixed</option>
+            <option value="Milestone-Based">Milestone-Based</option>
+          </select>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">

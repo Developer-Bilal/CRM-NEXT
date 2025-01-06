@@ -8,6 +8,8 @@ interface DeleteBtnProps {
   id: string;
 }
 
+// change path to delete clients and developers as well
+
 const DeleteBtn = ({ id }: DeleteBtnProps) => {
   const router = useRouter();
 
