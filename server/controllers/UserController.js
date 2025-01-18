@@ -1,6 +1,10 @@
 import { Users } from "../models/UserModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { v2 as cloudinary } from "cloudinary";
+import fs from "fs";
+import { config } from "dotenv";
+config();
 
 // GET users
 export const getUsers = async (req, res) => {
@@ -10,6 +14,37 @@ export const getUsers = async (req, res) => {
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: error.message });
+  }
+};
+
+//upload image
+export const uploadFile = async (req, res) => {
+  try {
+    console.log("Request Body:", req.body);
+    console.log("Request File:", req.file); // Log the uploaded file
+
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_SECRET,
+    });
+
+    const uploadResult = await cloudinary.uploader.upload(req.file.path, {
+      resource_type: "auto",
+    });
+
+    // Optional: Remove the file from local storage
+    fs.unlinkSync(req.file.path);
+
+    console.log("File uploaded successfully:", uploadResult.url);
+    return res.status(200).json({ url: uploadResult.url });
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    return res.status(500).json({ message: "File upload failed", error });
   }
 };
 
@@ -33,6 +68,9 @@ export const createUser = async (req, res) => {
         .json({ message: "Please fill all fields properly" });
     }
 
+    // Upload image
+
+    //
     const salt = await bcrypt.genSalt(10);
     const hashedPass = await bcrypt.hash(password, salt);
 
@@ -49,7 +87,7 @@ export const createUser = async (req, res) => {
     };
 
     const user = await Users.create(data);
-    return res.status(200).json({ message: "created sucessfully" });
+    return res.status(200).json({ message: "created successfully" });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: error.message });

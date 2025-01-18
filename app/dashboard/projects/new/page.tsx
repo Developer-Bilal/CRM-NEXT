@@ -33,8 +33,10 @@ const CreateProject = () => {
   const [milestones, setMilestones] = useState("");
   const [progressTracker, setProgressTracker] = useState("");
   const [notes, setNotes] = useState("");
-  const [relatedDocuments, setRelatedDocuments] = useState("");
-  const [communicationHistory, setCommunicationHistory] = useState("");
+  const [relatedDocuments, setRelatedDocuments] = useState<File | null>(null);
+  const [communicationHistory, setCommunicationHistory] = useState<File | null>(
+    null
+  );
   const router = useRouter();
   //
   const [clients, setClients] = useState([]);
@@ -58,31 +60,63 @@ const CreateProject = () => {
       .catch((err) => console.log(err));
   }, []);
 
+  // handle file change
+  const handleRelatedDocuments = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files ? e.target.files[0] : null;
+    setRelatedDocuments(selectedFile);
+  };
+
+  const handleCommunicationHistory = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const selectedFile = e.target.files ? e.target.files[0] : null;
+    setCommunicationHistory(selectedFile);
+  };
+
+  // handle submit form
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    const data = {
-      title,
-      description,
-      status,
-      client,
-      developer,
-      manager,
-      startDate,
-      deadline,
-      priorityLevel,
-      budget,
-      billing,
-      requirements,
-      milestones,
-      progressTracker,
-      notes,
-      relatedDocuments,
-      communicationHistory,
-    };
+    const formData = new FormData();
+
+    // Append other fields
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("status", status);
+    formData.append("client", client);
+    formData.append("developer", developer);
+    formData.append("manager", manager);
+    formData.append(
+      "startDate",
+      startDate ? new Date(startDate).toISOString().split("T")[0] : ""
+    );
+    formData.append(
+      "deadline",
+      deadline ? new Date(deadline).toISOString().split("T")[0] : ""
+    );
+    formData.append("priorityLevel", priorityLevel);
+    formData.append("budget", budget);
+    formData.append("billing", billing);
+    formData.append("requirements", requirements);
+    formData.append("milestones", milestones);
+    formData.append("progressTracker", progressTracker);
+    formData.append("notes", notes);
+
+    // Check if files are selected
+    if (relatedDocuments && communicationHistory) {
+      formData.append("relatedDocuments", relatedDocuments);
+      formData.append("communicationHistory", communicationHistory);
+    } else {
+      console.log("No files selected");
+      return;
+    }
 
     axios
-      .post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/projects`, data)
+      .post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/projects`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         console.log(res.data);
         router.push("/dashboard/projects");
@@ -91,6 +125,8 @@ const CreateProject = () => {
         console.log(err);
       });
   };
+
+  //
   return (
     <div className="m-4">
       <form
@@ -292,8 +328,9 @@ const CreateProject = () => {
             Related Documents
           </label>
           <input
-            value={relatedDocuments}
-            onChange={(e) => setRelatedDocuments(e.target.value)}
+            type="file"
+            name="relatedDocuments"
+            onChange={handleRelatedDocuments}
             required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
           />
@@ -303,8 +340,9 @@ const CreateProject = () => {
             CommunicationHistory
           </label>
           <input
-            value={communicationHistory}
-            onChange={(e) => setCommunicationHistory(e.target.value)}
+            type="file"
+            name="communicationHistory"
+            onChange={handleCommunicationHistory}
             required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
           />
