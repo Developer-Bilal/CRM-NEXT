@@ -36,13 +36,10 @@ const EditProject = () => {
   const [notes, setNotes] = useState("");
   const [relatedDocuments, setRelatedDocuments] = useState("");
   const [communicationHistory, setCommunicationHistory] = useState("");
-  // pre
-  // const [client, setClient] = useState("");
-  // const [developer, setDeveloper] = useState("");
+
   const [clients, setClients] = useState([]);
   const [developers, setDevelopers] = useState([]);
   const router = useRouter();
-  // const [selected, setSelected] = useState<Date>();
 
   useEffect(() => {
     axios
@@ -324,8 +321,8 @@ const EditProject = () => {
           </label>
           <input
             value={relatedDocuments}
-            onChange={(e) => setRelatedDocuments(e.target.value)}
-            required
+            // onChange={(e) => setRelatedDocuments(e.target.value)}
+            // required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
           />
         </div>
@@ -335,8 +332,8 @@ const EditProject = () => {
           </label>
           <input
             value={communicationHistory}
-            onChange={(e) => setCommunicationHistory(e.target.value)}
-            required
+            // onChange={(e) => setCommunicationHistory(e.target.value)}
+            // required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
           />
         </div>
