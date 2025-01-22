@@ -26,8 +26,12 @@ interface Project {
   communicationHistory: string;
 }
 
+type Milestone = {
+  [key: string]: boolean;
+};
 const ViewProject = () => {
   const { id } = useParams();
+  const [milestones, setMilestones] = useState<Milestone>({});
   const [project, setPoject] = useState<Project>({
     _id: "",
     title: "",
@@ -56,6 +60,7 @@ const ViewProject = () => {
       .then((res) => {
         console.log(res.data);
         setPoject(res.data);
+        setMilestones(JSON.parse(res.data.milestones));
       })
       .catch((err) => {
         console.log(err);
@@ -166,9 +171,18 @@ const ViewProject = () => {
           <label className="block text-sm font-medium text-gray-700">
             Milestones
           </label>
-          <div className="mt-1 block w-full p-2 border border-gray-300 rounded">
-            {project.milestones}
-          </div>
+          <ul>
+            {Object.keys(milestones).map((m) => (
+              <li className="flex items-center gap-4 py-2" key={m}>
+                <input
+                  type="checkbox"
+                  checked={milestones[m]}
+                  onChange={() => {}}
+                />
+                <span>{m}</span>
+              </li>
+            ))}
+          </ul>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">

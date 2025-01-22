@@ -17,6 +17,10 @@ interface arrayDeveloper {
   name: string;
   email: string;
 }
+
+type Milestone = {
+  [key: string]: boolean;
+};
 const CreateProject = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -30,13 +34,23 @@ const CreateProject = () => {
   const [budget, setBudget] = useState("");
   const [billing, setBilling] = useState("");
   const [requirements, setRequirements] = useState("");
-  const [milestones, setMilestones] = useState("");
-  const [progressTracker, setProgressTracker] = useState("");
+  const [milestones, setMilestones] = useState<Milestone>({
+    m1: false,
+    m2: true,
+    m3: false,
+  });
+  const [progressTracker, setProgressTracker] = useState(0);
+
+  // const [milestones, setMilestones] = useState("");
+  // const [progressTracker, setProgressTracker] = useState("");
   const [notes, setNotes] = useState("");
   const [relatedDocuments, setRelatedDocuments] = useState<File | null>(null);
   const [communicationHistory, setCommunicationHistory] = useState<File | null>(
     null
   );
+  //
+  const [newMilestone, setNewMilestone] = useState("");
+  //
   const router = useRouter();
   //
   const [clients, setClients] = useState([]);
@@ -58,7 +72,20 @@ const CreateProject = () => {
         setDevelopers(res.data);
       })
       .catch((err) => console.log(err));
-  }, []);
+
+    //count
+    const count = Object.values(milestones).reduce(
+      (acc, val) => acc + (val ? 1 : 0),
+      0
+    );
+
+    // total
+    const total = Object.values(milestones).length;
+
+    // percentage
+    setProgressTracker(Math.round((count / total) * 100));
+    //
+  }, [milestones]);
 
   // handle file change
   const handleRelatedDocuments = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,6 +98,34 @@ const CreateProject = () => {
   ) => {
     const selectedFile = e.target.files ? e.target.files[0] : null;
     setCommunicationHistory(selectedFile);
+  };
+
+  //
+  const handleChange = (milestone: string) => {
+    setMilestones((prev) => ({
+      ...prev,
+      [milestone]: !milestones[milestone],
+    }));
+  };
+
+  //
+  const handleDeleteMilestone = (milestone: string) => {
+    setMilestones((prev) => {
+      const newObj = { ...prev };
+      delete newObj[milestone];
+      return newObj;
+    });
+  };
+
+  // handle add milestone
+  const handleAddMilestone = () => {
+    if (newMilestone) {
+      console.log("submiteed");
+      setMilestones((prev) => ({
+        ...prev,
+        [newMilestone]: false,
+      }));
+    }
   };
 
   // handle submit form
@@ -98,8 +153,8 @@ const CreateProject = () => {
     formData.append("budget", budget);
     formData.append("billing", billing);
     formData.append("requirements", requirements);
-    formData.append("milestones", milestones);
-    formData.append("progressTracker", progressTracker);
+    formData.append("milestones", JSON.stringify(milestones));
+    formData.append("progressTracker", progressTracker.toString());
     formData.append("notes", notes);
 
     // Check if files are selected
@@ -133,7 +188,7 @@ const CreateProject = () => {
         onSubmit={handleSubmit}
         className="max-w-md mx-auto p-4 bg-white rounded shadow"
       >
-        <h2 className="text-lg font-semibold mb-4">Edit Project</h2>
+        <h2 className="text-lg font-semibold mb-4">Add Project</h2>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Title
@@ -294,12 +349,45 @@ const CreateProject = () => {
           <label className="block text-sm font-medium text-gray-700">
             Milestones
           </label>
-          <input
+          {/* <input
             value={milestones}
             onChange={(e) => setMilestones(e.target.value)}
             required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
-          />
+          /> */}
+          <div className="flex gap-1 py-4">
+            <input
+              type="text"
+              className="p-2 border-2 border-gray-300"
+              onChange={(e) => setNewMilestone(e.target.value)}
+            />
+            <button
+              onClick={handleAddMilestone}
+              className="p-2 bg-black text-white"
+            >
+              Add
+            </button>
+          </div>
+          <ul>
+            {Object.keys(milestones).map((m) => (
+              <li className="flex items-center gap-4 py-2" key={m}>
+                <div>
+                  <input
+                    type="checkbox"
+                    checked={milestones[m]}
+                    onChange={() => handleChange(m)}
+                  />
+                  <label>{m}</label>
+                </div>
+                <button
+                  onClick={() => handleDeleteMilestone(m)}
+                  className="bg-red-400 p-2 rounded text-sm"
+                >
+                  Remove
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
@@ -307,8 +395,8 @@ const CreateProject = () => {
           </label>
           <input
             value={progressTracker}
-            onChange={(e) => setProgressTracker(e.target.value)}
-            required
+            // onChange={(e) => setProgressTracker(e.target.value)}
+            // required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
           />
         </div>
