@@ -6,11 +6,12 @@ import swal from "sweetalert";
 
 interface DeleteBtnProps {
   id: string;
+  path: string;
 }
 
 // change path to delete clients and developers as well
 
-const DeleteBtn = ({ id }: DeleteBtnProps) => {
+const DeleteBtn = ({ id, path }: DeleteBtnProps) => {
   const router = useRouter();
 
   const handleDelete = async () => {
@@ -25,7 +26,7 @@ const DeleteBtn = ({ id }: DeleteBtnProps) => {
           icon: "success",
         });
         axios
-          .delete(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users/${id}`)
+          .delete(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/${path}/${id}`)
           .then(() => {
             console.log("Deleted");
             router.refresh();

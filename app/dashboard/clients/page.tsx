@@ -73,7 +73,7 @@ const Clients = async () => {
                     Details
                   </button>
                 </Link>
-                <DeleteBtn id={client._id} />
+                <DeleteBtn id={client._id} path={"clients"} />
               </td>
             </tr>
           ))}

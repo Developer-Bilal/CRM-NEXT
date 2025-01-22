@@ -178,6 +178,7 @@ const ViewProject = () => {
                   type="checkbox"
                   checked={milestones[m]}
                   onChange={() => {}}
+                  readOnly
                 />
                 <span>{m}</span>
               </li>

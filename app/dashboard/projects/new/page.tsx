@@ -120,7 +120,6 @@ const CreateProject = () => {
   // handle add milestone
   const handleAddMilestone = () => {
     if (newMilestone) {
-      console.log("submiteed");
       setMilestones((prev) => ({
         ...prev,
         [newMilestone]: false,
@@ -398,6 +397,7 @@ const CreateProject = () => {
             // onChange={(e) => setProgressTracker(e.target.value)}
             // required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            readOnly
           />
         </div>
         <div className="mb-4">

@@ -63,7 +63,7 @@ const Developers = async () => {
                     Details
                   </button>
                 </Link>
-                <DeleteBtn id={developer._id} />
+                <DeleteBtn id={developer._id} path={"developers"} />
               </td>
             </tr>
           ))}

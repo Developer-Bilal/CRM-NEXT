@@ -17,6 +17,10 @@ interface arrayDeveloper {
   name: string;
   email: string;
 }
+
+type Milestone = {
+  [key: string]: boolean;
+};
 const EditProject = () => {
   const { id } = useParams();
   const [title, setTitle] = useState("");
@@ -31,8 +35,8 @@ const EditProject = () => {
   const [budget, setBudget] = useState("");
   const [billing, setBilling] = useState("");
   const [requirements, setRequirements] = useState("");
-  const [milestones, setMilestones] = useState("");
-  const [progressTracker, setProgressTracker] = useState("");
+  const [milestones, setMilestones] = useState<Milestone>({});
+  const [progressTracker, setProgressTracker] = useState(0);
   const [notes, setNotes] = useState("");
   const [relatedDocuments, setRelatedDocuments] = useState("");
   const [communicationHistory, setCommunicationHistory] = useState("");
@@ -58,7 +62,7 @@ const EditProject = () => {
         setBudget(res.data.budget);
         setBilling(res.data.billing);
         setRequirements(res.data.requirements);
-        setMilestones(res.data.milestones);
+        setMilestones(JSON.parse(res.data.milestones));
         setProgressTracker(res.data.progressTracker);
         setNotes(res.data.notes);
         setRelatedDocuments(res.data.relatedDocuments);
@@ -101,7 +105,7 @@ const EditProject = () => {
       budget,
       billing,
       requirements,
-      milestones,
+      milestones: JSON.stringify(milestones),
       progressTracker,
       notes,
       relatedDocuments,
@@ -117,6 +121,23 @@ const EditProject = () => {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  //
+  const handleChange = (milestone: string) => {
+    setMilestones((prev) => ({
+      ...prev,
+      [milestone]: !milestones[milestone],
+    }));
+  };
+
+  //
+  const handleDeleteMilestone = (milestone: string) => {
+    setMilestones((prev) => {
+      const newObj = { ...prev };
+      delete newObj[milestone];
+      return newObj;
+    });
   };
 
   return (
@@ -286,12 +307,32 @@ const EditProject = () => {
           <label className="block text-sm font-medium text-gray-700">
             Milestones
           </label>
-          <input
+          {/* <input
             value={milestones}
             onChange={(e) => setMilestones(e.target.value)}
             required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
-          />
+          /> */}
+          <ul>
+            {Object.keys(milestones).map((m) => (
+              <li className="flex items-center gap-4 py-2" key={m}>
+                <div>
+                  <input
+                    type="checkbox"
+                    checked={milestones[m]}
+                    onChange={() => handleChange(m)}
+                  />
+                  <label>{m}</label>
+                </div>
+                <button
+                  onClick={() => handleDeleteMilestone(m)}
+                  className="bg-red-400 p-2 rounded text-sm"
+                >
+                  Remove
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
@@ -299,9 +340,10 @@ const EditProject = () => {
           </label>
           <input
             value={progressTracker}
-            onChange={(e) => setProgressTracker(e.target.value)}
-            required
+            // onChange={(e) => setProgressTracker(e.target.value)}
+            // required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            readOnly
           />
         </div>
         <div className="mb-4">
@@ -324,6 +366,7 @@ const EditProject = () => {
             // onChange={(e) => setRelatedDocuments(e.target.value)}
             // required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            readOnly
           />
         </div>
         <div className="mb-4">
@@ -335,6 +378,7 @@ const EditProject = () => {
             // onChange={(e) => setCommunicationHistory(e.target.value)}
             // required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            readOnly
           />
         </div>
         <button
