@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface User {
@@ -30,7 +30,6 @@ const ViewUser = () => {
     linkedin: "",
     additionalInfo: "",
   });
-  const router = useRouter();
 
   useEffect(() => {
     axios

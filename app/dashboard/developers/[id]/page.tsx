@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface Developer {
@@ -38,7 +38,6 @@ const ViewDeveloper = () => {
     date: "",
     additionalInfo: "",
   });
-  const router = useRouter();
 
   useEffect(() => {
     axios
