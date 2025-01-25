@@ -17,37 +17,6 @@ export const getUsers = async (req, res) => {
   }
 };
 
-//upload image
-export const uploadFile = async (req, res) => {
-  try {
-    console.log("Request Body:", req.body);
-    console.log("Request File:", req.file); // Log the uploaded file
-
-    if (!req.file) {
-      return res.status(400).json({ message: "No file uploaded" });
-    }
-
-    cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_SECRET,
-    });
-
-    const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-      resource_type: "auto",
-    });
-
-    // Optional: Remove the file from local storage
-    fs.unlinkSync(req.file.path);
-
-    console.log("File uploaded successfully:", uploadResult.url);
-    return res.status(200).json({ url: uploadResult.url });
-  } catch (error) {
-    console.error("Error uploading file:", error);
-    return res.status(500).json({ message: "File upload failed", error });
-  }
-};
-
 // CREATE user
 export const createUser = async (req, res) => {
   const {
@@ -69,7 +38,23 @@ export const createUser = async (req, res) => {
     }
 
     // Upload image
+    const file = req.file;
 
+    if (!file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_SECRET,
+    });
+
+    const uploadResult = await cloudinary.uploader.upload(file.path, {
+      resource_type: "image",
+    });
+
+    fs.unlinkSync(file.path);
     //
     const salt = await bcrypt.genSalt(10);
     const hashedPass = await bcrypt.hash(password, salt);
@@ -80,7 +65,7 @@ export const createUser = async (req, res) => {
       email,
       phone,
       country,
-      profilePhoto,
+      profilePhoto: uploadResult.url,
       linkedin,
       additionalInfo,
       password: hashedPass,
@@ -117,6 +102,7 @@ export const updateUser = async (req, res) => {
     profilePhoto,
     linkedin,
     additionalInfo,
+    password,
   } = req.body;
 
   const { id } = req.params;
@@ -137,6 +123,7 @@ export const updateUser = async (req, res) => {
       profilePhoto,
       linkedin,
       additionalInfo,
+      password,
     };
 
     const user = await Users.findByIdAndUpdate(id, data);

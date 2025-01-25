@@ -36,11 +36,6 @@ const Users = async () => {
               <th className="py-3 px-6 text-left w-1/3">Name</th>
               <th className="py-3 px-6 text-left w-1/3">Email</th>
               <th className="py-3 px-6 text-left w-1/3">isAdmin</th>
-              <th className="py-3 px-6 text-left w-1/3">phone</th>
-              <th className="py-3 px-6 text-left w-1/3">country</th>
-              <th className="py-3 px-6 text-left w-1/3">profilePhoto</th>
-              <th className="py-3 px-6 text-left w-1/3">linkedin</th>
-              <th className="py-3 px-6 text-left w-1/3">additionalInfo</th>
               <th className="py-3 px-6 text-left w-1/3">Actions</th>
             </tr>
           </thead>
@@ -53,11 +48,6 @@ const Users = async () => {
                 <td className="py-3 px-6">{user.name}</td>
                 <td className="py-3 px-6">{user.email}</td>
                 <td className="py-3 px-6">{user.isAdmin.toString()}</td>
-                <td className="py-3 px-6">{user.phone}</td>
-                <td className="py-3 px-6">{user.country}</td>
-                <td className="py-3 px-6">{user.profilePhoto}</td>
-                <td className="py-3 px-6">{user.linkedin}</td>
-                <td className="py-3 px-6">{user.additionalInfo}</td>
                 <td className="py-3 px-6 flex gap-2">
                   <Link href={`/dashboard/users/edit/${user._id}`}>
                     <button className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700">

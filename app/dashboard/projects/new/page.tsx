@@ -218,6 +218,7 @@ const CreateProject = () => {
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
             value={status}
             onChange={(e) => setStatus(e.target.value)}
+            required
           >
             <option value="">Select an option</option>
             <option value="Planned">Planned</option>
@@ -233,6 +234,7 @@ const CreateProject = () => {
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
             value={client}
             onChange={(e) => setClient(e.target.value)}
+            required
           >
             <option value="">Select an option</option>
             {clients &&
@@ -251,6 +253,7 @@ const CreateProject = () => {
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
             value={developer}
             onChange={(e) => setDeveloper(e.target.value)}
+            required
           >
             <option value="">Select an option</option>
             {developers &&
@@ -269,6 +272,7 @@ const CreateProject = () => {
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
             value={manager}
             onChange={(e) => setManager(e.target.value)}
+            required
           >
             <option value="">Select an option</option>
             {developers &&
@@ -300,6 +304,7 @@ const CreateProject = () => {
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
             value={priorityLevel}
             onChange={(e) => setPriorityLevel(e.target.value)}
+            required
           >
             <option value="">Select an option</option>
             <option value="High">High</option>
@@ -326,6 +331,7 @@ const CreateProject = () => {
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
             value={billing}
             onChange={(e) => setBilling(e.target.value)}
+            required
           >
             <option value="">Select an option</option>
             <option value="Hourly">Hourly</option>
@@ -348,12 +354,6 @@ const CreateProject = () => {
           <label className="block text-sm font-medium text-gray-700">
             Milestones
           </label>
-          {/* <input
-            value={milestones}
-            onChange={(e) => setMilestones(e.target.value)}
-            required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
-          /> */}
           <div className="flex gap-1 py-4">
             <input
               type="text"

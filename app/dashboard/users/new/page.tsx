@@ -1,8 +1,10 @@
 "use client";
 
 import axios from "axios";
+import { Divide } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import { CountryDropdown } from "react-country-region-selector";
 
 const CreateUser = () => {
   const [name, setName] = useState("");
@@ -10,34 +12,61 @@ const CreateUser = () => {
   const [isAdmin, setIsAdmin] = useState("");
   const [phone, setPhone] = useState("");
   const [country, setCountry] = useState("");
-  const [profilePhoto, setProfilePhoto] = useState("");
+  const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
   const [linkedin, setLinkedin] = useState("");
   const [additionalInfo, setAdditionalInfo] = useState("");
   const [password, setPassword] = useState("");
+
+  // url error
+  const [urlError, setUrlError] = useState("");
   const router = useRouter();
+
+  const handleProfilePhoto = (e: ChangeEvent<HTMLInputElement>) => {
+    const seletedFile = e.target.files ? e.target.files[0] : null;
+    setProfilePhoto(seletedFile);
+  };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    const data = {
-      name,
-      email,
-      isAdmin,
-      phone,
-      country,
-      profilePhoto,
-      linkedin,
-      additionalInfo,
-      password,
-    };
+    const pattern = /^https:\/\/(www\.)?linkedin\.com\/in\/[A-Za-z0-9-]+\/?$/;
 
-    axios
-      .post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users`, data)
-      .then((res) => {
-        console.log(res.data);
-        router.push("/dashboard/users");
-      })
-      .catch((err) => console.log(err));
+    if (!pattern.test(linkedin)) {
+      setUrlError(
+        "Please enter a valid LinkedIn profile URL, e.g., https://www.linkedin.com/in/username"
+      );
+    } else {
+      const formData = new FormData();
+
+      // form fields
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("isAdmin", isAdmin);
+      formData.append("phone", phone);
+      formData.append("country", country);
+      formData.append("linkedin", linkedin);
+      formData.append("additionalInfo", additionalInfo);
+      formData.append("password", password);
+      // profile photo file
+      if (profilePhoto) {
+        formData.append("profilePhoto", profilePhoto);
+      } else {
+        console.log("No files selected");
+        return;
+      }
+
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          router.push("/dashboard/users");
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   return (
@@ -53,7 +82,6 @@ const CreateUser = () => {
           </label>
           <input
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
-            value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
@@ -64,7 +92,6 @@ const CreateUser = () => {
           </label>
           <input
             type="email"
-            value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
@@ -76,8 +103,8 @@ const CreateUser = () => {
           </label>
           <select
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
-            value={isAdmin}
             onChange={(e) => setIsAdmin(e.target.value)}
+            required
           >
             <option value="">Select an option</option>
             <option value="true">True</option>
@@ -90,7 +117,6 @@ const CreateUser = () => {
           </label>
           <input
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
-            value={phone}
             onChange={(e) => setPhone(e.target.value)}
             required
           />
@@ -99,10 +125,10 @@ const CreateUser = () => {
           <label className="block text-sm font-medium text-gray-700">
             Country
           </label>
-          <input
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          <CountryDropdown
+            className="p-2 w-full rounded"
             value={country}
-            onChange={(e) => setCountry(e.target.value)}
+            onChange={(val) => setCountry(val)}
             required
           />
         </div>
@@ -112,8 +138,9 @@ const CreateUser = () => {
           </label>
           <input
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
-            value={profilePhoto}
-            onChange={(e) => setProfilePhoto(e.target.value)}
+            type="file"
+            name="profilePhoto"
+            onChange={handleProfilePhoto}
             required
           />
         </div>
@@ -123,17 +150,17 @@ const CreateUser = () => {
           </label>
           <input
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
-            value={linkedin}
             onChange={(e) => setLinkedin(e.target.value)}
             required
           />
+          {urlError && <div className="text-red-600">{urlError}</div>}
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Additional Info
           </label>
-          <input
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          <textarea
+            className="mt-1 block w-full p-2 h-40 border border-gray-300 rounded"
             value={additionalInfo}
             onChange={(e) => setAdditionalInfo(e.target.value)}
             required
@@ -145,7 +172,8 @@ const CreateUser = () => {
           </label>
           <input
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
-            value={password}
+            type="password"
+            minLength={8}
             onChange={(e) => setPassword(e.target.value)}
             required
           />

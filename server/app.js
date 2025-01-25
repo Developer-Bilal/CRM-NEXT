@@ -25,7 +25,7 @@ const start = async () => {
   if (!connectedDB) {
     console.log("Connection error");
   }
-  console.log("Coonected to DB");
+  console.log("Connected to DB");
   app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
   });

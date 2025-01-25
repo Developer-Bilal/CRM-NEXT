@@ -3,6 +3,7 @@
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
+import { CountryDropdown } from "react-country-region-selector";
 
 const EditUser = () => {
   const { id } = useParams();
@@ -14,6 +15,9 @@ const EditUser = () => {
   const [profilePhoto, setProfilePhoto] = useState("");
   const [linkedin, setLinkedin] = useState("");
   const [additionalInfo, setAdditionalInfo] = useState("");
+  const [password, setPassword] = useState("");
+  // url error
+  const [urlError, setUrlError] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -29,6 +33,7 @@ const EditUser = () => {
         setProfilePhoto(res.data.profilePhoto);
         setLinkedin(res.data.linkedin);
         setAdditionalInfo(res.data.additionalInfo);
+        setPassword(res.data.password);
       })
       .catch((err) => {
         console.log(err);
@@ -38,26 +43,34 @@ const EditUser = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    const data = {
-      name,
-      email,
-      isAdmin,
-      phone,
-      country,
-      profilePhoto,
-      linkedin,
-      additionalInfo,
-    };
+    const pattern = /^https:\/\/(www\.)?linkedin\.com\/in\/[A-Za-z0-9-]+\/?$/;
 
-    axios
-      .patch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users/${id}`, data)
-      .then((res) => {
-        console.log(res.data);
-        router.push("/dashboard/users");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (!pattern.test(linkedin)) {
+      setUrlError(
+        "Please enter a valid LinkedIn profile URL, e.g., https://www.linkedin.com/in/username"
+      );
+    } else {
+      const data = {
+        name,
+        email,
+        isAdmin,
+        phone,
+        country,
+        profilePhoto,
+        linkedin,
+        additionalInfo,
+      };
+
+      axios
+        .patch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users/${id}`, data)
+        .then((res) => {
+          console.log(res.data);
+          router.push("/dashboard/users");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   return (
@@ -119,10 +132,10 @@ const EditUser = () => {
           <label className="block text-sm font-medium text-gray-700">
             Country
           </label>
-          <input
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          <CountryDropdown
+            className="p-2 w-full rounded"
             value={country}
-            onChange={(e) => setCountry(e.target.value)}
+            onChange={(val) => setCountry(val)}
             required
           />
         </div>
@@ -147,15 +160,40 @@ const EditUser = () => {
             onChange={(e) => setLinkedin(e.target.value)}
             required
           />
+          {urlError && <div className="text-red-600">{urlError}</div>}
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Additional Info
           </label>
-          <input
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          <textarea
+            className="mt-1 block w-full p-2 h-40 border border-gray-300 rounded"
             value={additionalInfo}
             onChange={(e) => setAdditionalInfo(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Country
+          </label>
+          <CountryDropdown
+            className="p-2 w-full rounded"
+            value={country}
+            onChange={(val) => setCountry(val)}
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Password
+          </label>
+          <input
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            value={password}
+            type="text"
+            // onChange={(e) => setPassword(e.target.value)}
+            readOnly
             required
           />
         </div>

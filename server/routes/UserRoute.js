@@ -5,7 +5,6 @@ import {
   getUser,
   getUsers,
   updateUser,
-  uploadFile,
 } from "../controllers/UserController.js";
 // import { upload } from "../middlewares/multer.middleware.js";/
 import multer from "multer";
@@ -23,9 +22,11 @@ const upload = multer({ storage: storage });
 
 const UserRouter = Router();
 
-UserRouter.get("/", getUsers).post("/", createUser);
-
-UserRouter.post("/file", upload.single("file"), uploadFile);
+UserRouter.get("/", getUsers).post(
+  "/",
+  upload.single("profilePhoto"),
+  createUser
+);
 
 UserRouter.get("/:id", getUser)
   .patch("/:id", updateUser)
