@@ -15,7 +15,6 @@ const EditUser = () => {
   const [profilePhoto, setProfilePhoto] = useState("");
   const [linkedin, setLinkedin] = useState("");
   const [additionalInfo, setAdditionalInfo] = useState("");
-  const [password, setPassword] = useState("");
   // password change
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -37,7 +36,6 @@ const EditUser = () => {
         setProfilePhoto(res.data.profilePhoto);
         setLinkedin(res.data.linkedin);
         setAdditionalInfo(res.data.additionalInfo);
-        setPassword(res.data.password);
       })
       .catch((err) => {
         console.log(err);
