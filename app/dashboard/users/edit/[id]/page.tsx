@@ -1,6 +1,6 @@
 "use client";
 
-import axios from "axios";
+import axios, { ResponseType } from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import { CountryDropdown } from "react-country-region-selector";
@@ -16,8 +16,12 @@ const EditUser = () => {
   const [linkedin, setLinkedin] = useState("");
   const [additionalInfo, setAdditionalInfo] = useState("");
   const [password, setPassword] = useState("");
+  // password change
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   // url error
   const [urlError, setUrlError] = useState("");
+  const [passError, setPassError] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -59,6 +63,8 @@ const EditUser = () => {
         profilePhoto,
         linkedin,
         additionalInfo,
+        oldPassword,
+        newPassword,
       };
 
       axios
@@ -66,9 +72,11 @@ const EditUser = () => {
         .then((res) => {
           console.log(res.data);
           router.push("/dashboard/users");
+          setPassError("");
         })
         .catch((err) => {
           console.log(err);
+          setPassError("Incorrect Password!");
         });
     }
   };
@@ -146,7 +154,8 @@ const EditUser = () => {
           <input
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
             value={profilePhoto}
-            onChange={(e) => setProfilePhoto(e.target.value)}
+            // onChange={(e) => setProfilePhoto(e.target.value)}
+            readOnly
             required
           />
         </div>
@@ -186,15 +195,27 @@ const EditUser = () => {
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            Password
+            Old Password
           </label>
           <input
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
-            value={password}
-            type="text"
-            // onChange={(e) => setPassword(e.target.value)}
-            readOnly
-            required
+            value={oldPassword}
+            type="password"
+            onChange={(e) => setOldPassword(e.target.value)}
+            // required
+          />
+          {passError && <div className="text-red-600">{passError}</div>}
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            New Password
+          </label>
+          <input
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            value={newPassword}
+            type="password"
+            onChange={(e) => setNewPassword(e.target.value)}
+            // required
           />
         </div>
         <button

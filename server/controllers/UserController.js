@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
 import { config } from "dotenv";
+import { User } from "lucide-react";
 config();
 
 // GET users
@@ -102,7 +103,8 @@ export const updateUser = async (req, res) => {
     profilePhoto,
     linkedin,
     additionalInfo,
-    password,
+    oldPassword,
+    newPassword,
   } = req.body;
 
   const { id } = req.params;
@@ -114,6 +116,20 @@ export const updateUser = async (req, res) => {
         .json({ message: "Please fill all fields properly" });
     }
 
+    const user = await Users.findById(id);
+    let hashedPass = user.password;
+
+    if (oldPassword && newPassword) {
+      const match = await bcrypt.compare(oldPassword, user.password);
+
+      if (!match) {
+        return res.status(400).json({ message: "Incorrect Password" });
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      hashedPass = await bcrypt.hash(newPassword, salt);
+    }
+
     const data = {
       name,
       email,
@@ -123,10 +139,10 @@ export const updateUser = async (req, res) => {
       profilePhoto,
       linkedin,
       additionalInfo,
-      password,
+      password: hashedPass,
     };
 
-    const user = await Users.findByIdAndUpdate(id, data);
+    const updatedUser = await Users.findByIdAndUpdate(id, data);
     return res.status(200).json({ message: "Success!" });
   } catch (error) {
     console.log(error.message);
