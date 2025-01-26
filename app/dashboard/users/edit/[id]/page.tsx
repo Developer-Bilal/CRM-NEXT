@@ -1,6 +1,6 @@
 "use client";
 
-import axios, { ResponseType } from "axios";
+import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import { CountryDropdown } from "react-country-region-selector";

@@ -1,7 +1,6 @@
 "use client";
 
 import axios from "axios";
-import { Divide } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { CountryDropdown } from "react-country-region-selector";
