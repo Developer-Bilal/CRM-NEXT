@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
 import { config } from "dotenv";
-import { User } from "lucide-react";
 config();
 
 // GET users

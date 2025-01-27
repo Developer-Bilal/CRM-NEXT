@@ -35,7 +35,11 @@ const EditProject = () => {
   const [budget, setBudget] = useState("");
   const [billing, setBilling] = useState("");
   const [requirements, setRequirements] = useState("");
-  const [milestones, setMilestones] = useState<Milestone>({});
+  const [milestones, setMilestones] = useState<Milestone>({
+    m1: false,
+    m2: true,
+    m3: false,
+  });
   const [progressTracker, setProgressTracker] = useState(0);
   const [notes, setNotes] = useState("");
   const [relatedDocuments, setRelatedDocuments] = useState("");
@@ -43,6 +47,9 @@ const EditProject = () => {
 
   const [clients, setClients] = useState([]);
   const [developers, setDevelopers] = useState([]);
+  //
+  const [newMilestone, setNewMilestone] = useState("");
+
   const router = useRouter();
 
   useEffect(() => {
@@ -89,6 +96,48 @@ const EditProject = () => {
       .catch((err) => console.log(err));
   }, []);
 
+  useEffect(() => {
+    //count
+    const count = Object.values(milestones).reduce(
+      (acc, val) => acc + (val ? 1 : 0),
+      0
+    );
+
+    // total
+    const total = Object.values(milestones).length;
+
+    // percentage
+    setProgressTracker(Math.round((count / total) * 100));
+    //
+  }, [milestones]);
+
+  //
+  const handleChange = (milestone: string) => {
+    setMilestones((prev) => ({
+      ...prev,
+      [milestone]: !milestones[milestone],
+    }));
+  };
+
+  //
+  const handleDeleteMilestone = (milestone: string) => {
+    setMilestones((prev) => {
+      const newObj = { ...prev };
+      delete newObj[milestone];
+      return newObj;
+    });
+  };
+
+  // handle add milestone
+  const handleAddMilestone = () => {
+    if (newMilestone) {
+      setMilestones((prev) => ({
+        ...prev,
+        [newMilestone]: false,
+      }));
+    }
+  };
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
@@ -121,23 +170,6 @@ const EditProject = () => {
       .catch((err) => {
         console.log(err);
       });
-  };
-
-  //
-  const handleChange = (milestone: string) => {
-    setMilestones((prev) => ({
-      ...prev,
-      [milestone]: !milestones[milestone],
-    }));
-  };
-
-  //
-  const handleDeleteMilestone = (milestone: string) => {
-    setMilestones((prev) => {
-      const newObj = { ...prev };
-      delete newObj[milestone];
-      return newObj;
-    });
   };
 
   return (
@@ -307,12 +339,20 @@ const EditProject = () => {
           <label className="block text-sm font-medium text-gray-700">
             Milestones
           </label>
-          {/* <input
-            value={milestones}
-            onChange={(e) => setMilestones(e.target.value)}
-            required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
-          /> */}
+          <div className="flex gap-1 py-4">
+            <input
+              type="text"
+              className="p-2 border-2 border-gray-300"
+              onChange={(e) => setNewMilestone(e.target.value)}
+            />
+            <button
+              type="button"
+              onClick={handleAddMilestone}
+              className="p-2 bg-black text-white"
+            >
+              Add
+            </button>
+          </div>
           <ul>
             {Object.keys(milestones).map((m) => (
               <li className="flex items-center gap-4 py-2" key={m}>
