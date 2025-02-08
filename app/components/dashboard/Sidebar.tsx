@@ -30,16 +30,6 @@ const Sidebar = () => {
             </Link>
           </li>
           <li className="p-4 hover:bg-gray-700">
-            <Link href="/dashboard/users">
-              <div>Profile</div>
-            </Link>
-          </li>
-          <li className="p-4 hover:bg-gray-700">
-            <Link href="/dashboard/users">
-              <div>Settings</div>
-            </Link>
-          </li>
-          <li className="p-4 hover:bg-gray-700">
             <SignOut />
           </li>
         </ul>

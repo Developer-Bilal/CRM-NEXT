@@ -1,6 +1,7 @@
 "use client";
 
 import axios from "axios";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { CountryDropdown } from "react-country-region-selector";
@@ -16,13 +17,16 @@ const CreateUser = () => {
   const [additionalInfo, setAdditionalInfo] = useState("");
   const [password, setPassword] = useState("");
 
+  // preview image
+  const [preview, setPreview] = useState("");
   // url error
   const [urlError, setUrlError] = useState("");
   const router = useRouter();
 
   const handleProfilePhoto = (e: ChangeEvent<HTMLInputElement>) => {
-    const seletedFile = e.target.files ? e.target.files[0] : null;
-    setProfilePhoto(seletedFile);
+    const selectedFile = e.target.files ? e.target.files[0] : null;
+    setPreview(URL.createObjectURL(selectedFile!));
+    setProfilePhoto(selectedFile);
   };
 
   const handleSubmit = (e: FormEvent) => {
@@ -141,6 +145,13 @@ const CreateUser = () => {
             name="profilePhoto"
             onChange={handleProfilePhoto}
             required
+          />
+          <Image
+            className="flex items-center justify-center p-6 w-full"
+            src={preview}
+            alt="profile image"
+            width={200}
+            height={200}
           />
         </div>
         <div className="mb-4">
