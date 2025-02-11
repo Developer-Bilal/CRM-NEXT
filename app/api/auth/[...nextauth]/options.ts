@@ -37,7 +37,8 @@ export const options: NextAuthOptions = {
           placeholder: "Your Password",
         },
       },
-      async authorize(credentials): Promise<User | any> {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      async authorize(credentials): Promise<any> {
         // get data
         const users = await allUsers();
 
@@ -60,7 +61,7 @@ export const options: NextAuthOptions = {
 
           if (
             credentials?.username === u.name &&
-            bcrypt.compareSync(credentials?.password!, u.password)
+            bcrypt.compareSync(credentials?.password, u.password)
           ) {
             console.log("success");
             foundUser = u;

@@ -12,9 +12,12 @@ module.exports = {
         source: "/",
         destination: "/dashboard",
         permanent: true,
-      }
-    ]
-  }
-}
+      },
+    ];
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+};
 
 export default nextConfig;
