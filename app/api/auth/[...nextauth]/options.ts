@@ -37,7 +37,7 @@ export const options: NextAuthOptions = {
           placeholder: "Your Password",
         },
       },
-      async authorize(credentials): Promise<any> {
+      async authorize(credentials): Promise<User | any> {
         // get data
         const users = await allUsers();
 
