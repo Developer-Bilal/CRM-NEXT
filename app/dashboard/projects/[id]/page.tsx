@@ -64,7 +64,7 @@ const ViewProject = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [id]);
 
   return (
     <div className="m-4">

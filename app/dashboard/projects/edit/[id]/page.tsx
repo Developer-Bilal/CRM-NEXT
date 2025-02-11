@@ -94,7 +94,7 @@ const EditProject = () => {
         setDevelopers(res.data);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     //count

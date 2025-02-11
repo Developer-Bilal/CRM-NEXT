@@ -49,8 +49,7 @@ const ViewDeveloper = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-
+  }, [id]);
   return (
     <div className="m-4">
       <div className="max-w-md mx-auto p-4 bg-white rounded shadow">

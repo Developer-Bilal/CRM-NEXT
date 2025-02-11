@@ -41,7 +41,7 @@ const ViewUser = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [id]);
 
   return (
     <div className="m-4">

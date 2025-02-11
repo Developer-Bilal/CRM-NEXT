@@ -40,7 +40,7 @@ const EditUser = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [id]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
