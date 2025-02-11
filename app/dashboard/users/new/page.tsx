@@ -25,8 +25,8 @@ const CreateUser = () => {
 
   const handleProfilePhoto = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files ? e.target.files[0] : null;
-    setPreview(URL.createObjectURL(selectedFile!));
     setProfilePhoto(selectedFile);
+    setPreview(URL.createObjectURL(selectedFile!));
   };
 
   const handleSubmit = (e: FormEvent) => {
@@ -146,13 +146,15 @@ const CreateUser = () => {
             onChange={handleProfilePhoto}
             required
           />
-          <Image
-            className="flex items-center justify-center p-6 w-full"
-            src={preview}
-            alt="profile image"
-            width={200}
-            height={200}
-          />
+          {preview && (
+            <Image
+              className="flex items-center justify-center p-6 w-full"
+              src={preview}
+              alt="profile image"
+              width={200}
+              height={200}
+            />
+          )}
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">

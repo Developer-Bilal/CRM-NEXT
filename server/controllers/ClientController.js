@@ -1,5 +1,8 @@
 import { Clients } from "../models/ClientModel.js";
-
+import { v2 as cloudinary } from "cloudinary";
+import fs from "fs";
+import { config } from "dotenv";
+config();
 // GET clients
 export const getClients = async (req, res) => {
   try {
@@ -16,7 +19,6 @@ export const createClient = async (req, res) => {
   const {
     name = "",
     email = "",
-    profilePhoto = "",
     phone = "",
     country = "",
     source = "",
@@ -32,10 +34,27 @@ export const createClient = async (req, res) => {
         .json({ message: "Please fill all fields properly" });
     }
 
+    const file = req.file;
+    let uploadResult = "";
+
+    if (file) {
+      cloudinary.config({
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_SECRET,
+      });
+
+      uploadResult = await cloudinary.uploader.upload(file.path, {
+        resource_type: "image",
+      });
+
+      fs.unlinkSync(file.path);
+    }
+
     const client = await Clients.create({
       name,
       email,
-      profilePhoto,
+      profilePhoto: uploadResult.url,
       phone,
       country,
       source,
@@ -44,7 +63,7 @@ export const createClient = async (req, res) => {
       date,
       additionalInfo,
     });
-    return res.status(200).json({ message: "created sucessfully" });
+    return res.status(200).json({ message: "created successfully" });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: error.message });

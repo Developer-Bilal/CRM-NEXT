@@ -1,8 +1,11 @@
 "use client";
 
+import { DatePicker } from "@/components/DatePicker";
 import axios from "axios";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import { CountryDropdown } from "react-country-region-selector";
 
 const CreateDeveloper = () => {
   const [name, setName] = useState("");
@@ -13,37 +16,78 @@ const CreateDeveloper = () => {
   const [source, setSource] = useState("");
   const [portfolioURL, setPortfolioURL] = useState("");
   const [linkedin, setLinkedin] = useState("");
-  const [resumeFile, setResumeFile] = useState("");
-  const [profilePhoto, setProfilePhoto] = useState("");
-  const [date, setDate] = useState("");
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
+  const [date, setDate] = useState<Date | undefined>(new Date());
   const [additionalInfo, setAdditionalInfo] = useState("");
+
+  // preview image
+  const [preview, setPreview] = useState("");
+  // url error
+  const [urlError, setUrlError] = useState("");
   const router = useRouter();
+
+  const handleResumeFile = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files ? e.target.files[0] : null;
+    setResumeFile(selectedFile);
+  };
+
+  const handleProfilePhoto = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files ? e.target.files[0] : null;
+    setProfilePhoto(selectedFile);
+    setPreview(URL.createObjectURL(selectedFile!));
+  };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    const data = {
-      name,
-      email,
-      role,
-      phone,
-      country,
-      source,
-      portfolioURL,
-      linkedin,
-      resumeFile,
-      profilePhoto,
-      date,
-      additionalInfo,
-    };
+    const pattern = /^https:\/\/(www\.)?linkedin\.com\/in\/[A-Za-z0-9-]+\/?$/;
 
-    axios
-      .post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/developers`, data)
-      .then((res) => {
-        console.log(res.data);
-        router.push("/dashboard/developers");
-      })
-      .catch((err) => console.log(err));
+    if (!pattern.test(linkedin)) {
+      setUrlError(
+        "Please enter a valid LinkedIn profile URL, e.g., https://www.linkedin.com/in/username"
+      );
+    } else {
+      const formData = new FormData();
+
+      // form fields
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("role", role);
+      formData.append("phone", phone);
+      formData.append("country", country);
+      formData.append("source", source);
+      formData.append("portfolioURL", portfolioURL);
+      formData.append("linkedin", linkedin);
+      formData.append("additionalInfo", additionalInfo);
+
+      // date
+      formData.append(
+        "date",
+        date ? new Date(date).toISOString().split("T")[0] : ""
+      );
+
+      // profile photo file and resume file
+      if (profilePhoto && resumeFile) {
+        formData.append("profilePhoto", profilePhoto);
+        formData.append("resumeFile", resumeFile);
+      } else {
+        console.log("No files selected");
+        return;
+      }
+
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/developers`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          router.push("/dashboard/developers");
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   return (
@@ -59,6 +103,7 @@ const CreateDeveloper = () => {
           </label>
           <input
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            name="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
@@ -70,11 +115,32 @@ const CreateDeveloper = () => {
           </label>
           <input
             type="email"
+            name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
           />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Profile Photo
+          </label>
+          <input
+            type="file"
+            onChange={handleProfilePhoto}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          />
+          {preview && (
+            <Image
+              className="flex items-center justify-center p-6 w-full"
+              src={preview}
+              alt="profile image"
+              width={200}
+              height={200}
+            />
+          )}
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
@@ -102,11 +168,11 @@ const CreateDeveloper = () => {
           <label className="block text-sm font-medium text-gray-700">
             Country
           </label>
-          <input
+          <CountryDropdown
+            className="p-2 w-full rounded"
             value={country}
-            onChange={(e) => setCountry(e.target.value)}
+            onChange={(val) => setCountry(val)}
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
           />
         </div>
         <div className="mb-4">
@@ -125,10 +191,11 @@ const CreateDeveloper = () => {
             Portfolio URL
           </label>
           <input
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            type="url"
             value={portfolioURL}
             onChange={(e) => setPortfolioURL(e.target.value)}
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
           />
         </div>
         <div className="mb-4">
@@ -141,25 +208,16 @@ const CreateDeveloper = () => {
             required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
           />
+          {urlError && <div className="text-red-600">{urlError}</div>}
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Resume File
           </label>
           <input
-            value={resumeFile}
-            onChange={(e) => setResumeFile(e.target.value)}
-            required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Profile Photo
-          </label>
-          <input
-            value={profilePhoto}
-            onChange={(e) => setProfilePhoto(e.target.value)}
+            type="file"
+            name="resumeFile"
+            onChange={handleResumeFile}
             required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
           />
@@ -168,22 +226,17 @@ const CreateDeveloper = () => {
           <label className="block text-sm font-medium text-gray-700">
             Date
           </label>
-          <input
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
-          />
+          <DatePicker date={date} setDate={setDate} />
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Additional Info
           </label>
-          <input
+          <textarea
             value={additionalInfo}
             onChange={(e) => setAdditionalInfo(e.target.value)}
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            className="mt-1 block w-full h-40 p-2 border border-gray-300 rounded"
           />
         </div>
         <button

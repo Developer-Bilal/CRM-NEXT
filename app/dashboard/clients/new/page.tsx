@@ -1,45 +1,81 @@
 "use client";
 
+import { DatePicker } from "@/components/DatePicker";
 import axios from "axios";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import { CountryDropdown } from "react-country-region-selector";
 
 const CreateClient = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [profilePhoto, setProfilePhoto] = useState("");
+  const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
   const [phone, setPhone] = useState("");
   const [country, setCountry] = useState("");
   const [source, setSource] = useState("");
   const [websiteURL, setWebsiteURL] = useState("");
   const [linkedin, setLinkedin] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState<Date | undefined>(new Date());
   const [additionalInfo, setAdditionalInfo] = useState("");
+
+  // preview image
+  const [preview, setPreview] = useState("");
+  // error
+  const [urlError, setUrlError] = useState("");
   const router = useRouter();
+
+  const handleProfilePhoto = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files ? e.target.files[0] : null;
+    setProfilePhoto(selectedFile);
+    setPreview(URL.createObjectURL(selectedFile!));
+  };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    const data = {
-      name,
-      email,
-      profilePhoto,
-      phone,
-      country,
-      source,
-      websiteURL,
-      linkedin,
-      date,
-      additionalInfo,
-    };
+    const pattern = /^https:\/\/(www\.)?linkedin\.com\/in\/[A-Za-z0-9-]+\/?$/;
 
-    axios
-      .post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/clients`, data)
-      .then((res) => {
-        console.log(res.data);
-        router.push("/dashboard/clients");
-      })
-      .catch((err) => console.log(err));
+    if (!pattern.test(linkedin)) {
+      setUrlError(
+        "Please enter a valid LinkedIn profile URL, e.g., https://www.linkedin.com/in/username"
+      );
+    } else {
+      const formData = new FormData();
+
+      // form fields
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("phone", phone);
+      formData.append("country", country);
+      formData.append("source", source);
+      formData.append("websiteURL", websiteURL);
+      formData.append("linkedin", linkedin);
+      formData.append(
+        "date",
+        date ? new Date(date).toISOString().split("T")[0] : ""
+      );
+      formData.append("additionalInfo", additionalInfo);
+      // profile photo file
+      if (profilePhoto) {
+        formData.append("profilePhoto", profilePhoto);
+      } else {
+        console.log("No files selected");
+        return;
+      }
+
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/clients`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          router.push("/dashboard/clients");
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   return (
@@ -78,10 +114,20 @@ const CreateClient = () => {
           </label>
           <input
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
-            value={profilePhoto}
-            onChange={(e) => setProfilePhoto(e.target.value)}
+            type="file"
+            name="profilePhoto"
+            onChange={handleProfilePhoto}
             required
           />
+          {preview && (
+            <Image
+              className="flex items-center justify-center p-6 w-full"
+              src={preview}
+              alt="profile image"
+              width={200}
+              height={200}
+            />
+          )}
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
@@ -98,10 +144,10 @@ const CreateClient = () => {
           <label className="block text-sm font-medium text-gray-700">
             country
           </label>
-          <input
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          <CountryDropdown
+            className="p-2 w-full rounded"
             value={country}
-            onChange={(e) => setCountry(e.target.value)}
+            onChange={(val) => setCountry(val)}
             required
           />
         </div>
@@ -122,6 +168,7 @@ const CreateClient = () => {
           </label>
           <input
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            type="url"
             value={websiteURL}
             onChange={(e) => setWebsiteURL(e.target.value)}
             required
@@ -137,24 +184,20 @@ const CreateClient = () => {
             onChange={(e) => setLinkedin(e.target.value)}
             required
           />
+          {urlError && <div className="text-red-600">{urlError}</div>}
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             date
           </label>
-          <input
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            required
-          />
+          <DatePicker date={date} setDate={setDate} />
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             additionalInfo
           </label>
-          <input
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          <textarea
+            className="mt-1 block w-full h-40 p-2 border border-gray-300 rounded"
             value={additionalInfo}
             onChange={(e) => setAdditionalInfo(e.target.value)}
             required

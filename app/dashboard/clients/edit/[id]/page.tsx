@@ -103,7 +103,7 @@ const EditClient = () => {
           <input
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
             value={profilePhoto}
-            onChange={(e) => setProfilePhoto(e.target.value)}
+            // onChange={(e) => setProfilePhoto(e.target.value)}
             required
           />
         </div>

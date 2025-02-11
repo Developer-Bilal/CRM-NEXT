@@ -1,4 +1,8 @@
 import { Developers } from "../models/DeveloperModel.js";
+import { v2 as cloudinary } from "cloudinary";
+import fs from "fs";
+import { config } from "dotenv";
+config();
 
 // GET developers
 export const getDevelopers = async (req, res) => {
@@ -20,10 +24,8 @@ export const createDeveloper = async (req, res) => {
     phone = "",
     country = "",
     source = "",
-    portfolioURL = "",
     linkedin = "",
-    resumeFile = "",
-    profilePhoto = "",
+    portfolioURL = "",
     date = "",
     additionalInfo = "",
   } = req.body;
@@ -34,21 +36,50 @@ export const createDeveloper = async (req, res) => {
         .json({ message: "Please fill all fields properly" });
     }
 
+    // Extract all file arrays from req.files
+    const fileArrays = Object.values(req.files);
+
+    // Flatten the nested arrays into a single array of files
+    const allFiles = fileArrays.flat();
+
+    // file upload
+    if (!allFiles.length) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_SECRET,
+    });
+
+    // Iterate over files and upload each file to Cloudinary
+    const uploadResults = await Promise.all(
+      allFiles.map((file) =>
+        cloudinary.uploader.upload(file.path, {
+          resource_type: "auto",
+        })
+      )
+    );
+
+    // Remove the file from local storage
+    allFiles.map((file) => fs.unlinkSync(file.path));
+
     const developers = await Developers.create({
       name,
       email,
+      profilePhoto: uploadResults[0].url,
       role,
       phone,
       country,
       source,
       portfolioURL,
       linkedin,
-      resumeFile,
-      profilePhoto,
+      resumeFile: uploadResults[1].url,
       date,
       additionalInfo,
     });
-    return res.status(200).json({ message: "created sucessfully" });
+    return res.status(200).json({ message: "created successfully" });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: error.message });
