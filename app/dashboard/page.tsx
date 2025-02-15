@@ -1,21 +1,70 @@
-const Dashboard = () => {
+import { getServerSession } from "next-auth";
+import { options } from "../api/auth/[...nextauth]/options";
+import { ArrowUp } from "lucide-react";
+
+import MyBarChart from "../../components/MyBarChart";
+import MyBarAdminChart from "../../components/MyBarAdminChart";
+import Link from "next/link";
+
+const Dashboard = async () => {
+  const session = await getServerSession(options);
+  console.log(session);
+
   return (
-    <div className="m-4">
-      <div className="my-4 p-4 flex items-center justify-around ">
-        <div className="bg-green-300 px-10 py-6 rounded">
-          <div>+10</div>
+    <div className="flex flex-col gap-2 m-4">
+      <div className="my-4 p-4 flex gap-8 items-center justify-around ">
+        <Link
+          href={`/dashboard/clients`}
+          className="flex items-center justify-around px-4 py-10  w-full  shadow-lg border-t-2 border-gray-500 rounded"
+        >
           <div>Clients</div>
-        </div>
-        <div className="bg-green-300 px-10 py-6 rounded">
-          <div>10</div>
-          <div>Users</div>
-        </div>
-        <div className="bg-green-300 px-10 py-6 rounded">
-          <div>+10</div>
+          <div className="flex">
+            <div>+10</div>
+            <ArrowUp className="text-green-500" />
+          </div>
+        </Link>
+        <Link
+          href={`/dashboard/projects`}
+          className="flex items-center justify-around px-4 py-10  w-full  shadow-lg border-t-2 border-gray-500 rounded"
+        >
           <div>Projects</div>
-        </div>
+          <div className="flex">
+            <div>+10</div>
+            <ArrowUp className="text-green-500" />
+          </div>
+        </Link>
+        <Link
+          href={`/dashboard/users`}
+          className="flex items-center justify-around px-4 py-10  w-full  shadow-lg border-t-2 border-gray-500 rounded"
+        >
+          <div>Users</div>
+          <div className="flex">
+            <div>+10</div>
+            <ArrowUp className="text-green-500" />
+          </div>
+        </Link>
+        <Link
+          href={`/dashboard/developers`}
+          className="flex items-center justify-around px-4 py-10  w-full  shadow-lg border-t-2 border-gray-500 rounded"
+        >
+          <div>Developers</div>
+          <div className="flex">
+            <div>+10</div>
+            <ArrowUp className="text-green-500" />
+          </div>
+        </Link>
       </div>
-      <div className="bg-orange-200">
+      {/* className="w-[600px] h-[600px] mx-auto border-2 border-black" */}
+      <div className="grid grid-cols-2 gap-2">
+        <div>
+          <MyBarChart />
+        </div>
+        <div>
+          <MyBarAdminChart />
+        </div>
+        {/* <MyBarChart /> */}
+      </div>
+      <div className="bg-orange-200 my-4">
         <table className="min-w-full bg-white border border-gray-200">
           <thead>
             <tr className="w-full bg-gray-200 text-gray-600 uppercase text-sm leading-normal">

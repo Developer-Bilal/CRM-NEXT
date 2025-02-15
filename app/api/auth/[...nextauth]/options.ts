@@ -26,10 +26,10 @@ export const options: NextAuthOptions = {
       name: "credentials",
 
       credentials: {
-        username: {
-          label: "Username",
-          type: "text",
-          placeholder: "Your Name",
+        email: {
+          label: "Email",
+          type: "email",
+          placeholder: "Your Email",
         },
         password: {
           label: "Password",
@@ -57,21 +57,21 @@ export const options: NextAuthOptions = {
 
         //
         users.map((u: User) => {
-          console.log(u);
+          // console.log(u);
 
           if (
-            credentials?.username === u.name &&
+            credentials?.email === u.email &&
             bcrypt.compareSync(credentials?.password, u.password)
           ) {
-            console.log("success");
+            // console.log("success");
             foundUser = u;
           }
         });
-        console.log("User: ", foundUser);
+        // console.log("User: ", foundUser);
 
         // const user = { id: "1", name: "bilal", password: "pass" };
 
-        if (credentials?.username === foundUser.name) {
+        if (credentials?.email === foundUser.email) {
           return foundUser;
         } else {
           return null;
