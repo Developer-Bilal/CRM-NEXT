@@ -1,9 +1,12 @@
 import { getServerSession } from "next-auth";
 import { options } from "../api/auth/[...nextauth]/options";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, Plus, TrendingUp } from "lucide-react";
 
 import MyBarChart from "../../components/MyBarChart";
 import MyBarAdminChart from "../../components/MyBarAdminChart";
+import BarProjectStatus from "../../components/BarProjectStatus";
+import BarPriority from "../../components/BarPriority";
+import LineProjectsAdded from "../../components/LineProjectsAdded";
 import Link from "next/link";
 
 const Dashboard = async () => {
@@ -19,8 +22,11 @@ const Dashboard = async () => {
         >
           <div>Clients</div>
           <div className="flex">
-            <div>+10</div>
-            <ArrowUp className="text-green-500" />
+            <div className="flex items-center">
+              <Plus className="size-3" />
+              10
+            </div>
+            <TrendingUp className="text-green-500" />
           </div>
         </Link>
         <Link
@@ -29,8 +35,11 @@ const Dashboard = async () => {
         >
           <div>Projects</div>
           <div className="flex">
-            <div>+10</div>
-            <ArrowUp className="text-green-500" />
+            <div className="flex items-center">
+              <Plus className="size-3" />
+              10
+            </div>
+            <TrendingUp className="text-green-500" />
           </div>
         </Link>
         <Link
@@ -39,8 +48,11 @@ const Dashboard = async () => {
         >
           <div>Users</div>
           <div className="flex">
-            <div>+10</div>
-            <ArrowUp className="text-green-500" />
+            <div className="flex items-center">
+              <Plus className="size-3" />
+              10
+            </div>
+            <TrendingUp className="text-green-500" />
           </div>
         </Link>
         <Link
@@ -49,21 +61,24 @@ const Dashboard = async () => {
         >
           <div>Developers</div>
           <div className="flex">
-            <div>+10</div>
-            <ArrowUp className="text-green-500" />
+            <div className="flex items-center">
+              <Plus className="size-3" />
+              10
+            </div>
+            <TrendingUp className="text-green-500" />
           </div>
         </Link>
       </div>
       {/* className="w-[600px] h-[600px] mx-auto border-2 border-black" */}
+
       <div className="grid grid-cols-2 gap-2">
-        <div>
-          <MyBarChart />
-        </div>
-        <div>
-          <MyBarAdminChart />
-        </div>
-        {/* <MyBarChart /> */}
+        <MyBarChart />
+        <MyBarAdminChart />
+        <BarProjectStatus />
+        <BarPriority />
+        {/* <LineProjectsAdded /> */}
       </div>
+
       <div className="bg-orange-200 my-4">
         <table className="min-w-full bg-white border border-gray-200">
           <thead>
