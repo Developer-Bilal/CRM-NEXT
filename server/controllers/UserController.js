@@ -16,6 +16,18 @@ export const getUsers = async (req, res) => {
   }
 };
 
+// GET Selected users
+export const getSelectedUsers = async (req, res) => {
+  const { user } = req.params;
+  try {
+    const users = await Users.find({ addedBy: `${user}` });
+    return res.status(200).json(users);
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 // CREATE user
 export const createUser = async (req, res) => {
   const {
@@ -28,6 +40,7 @@ export const createUser = async (req, res) => {
     linkedin = "",
     additionalInfo = "",
     password = "",
+    addedBy = "",
   } = req.body;
   try {
     if (!name || !isAdmin || !email || !password) {
@@ -68,6 +81,7 @@ export const createUser = async (req, res) => {
       linkedin,
       additionalInfo,
       password: hashedPass,
+      addedBy,
     };
 
     const user = await Users.create(data);

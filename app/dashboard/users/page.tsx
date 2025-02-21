@@ -1,4 +1,6 @@
+import { options } from "@/app/api/auth/[...nextauth]/options";
 import DeleteBtn from "@/app/components/dashboard/DeleteBtn";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 
 interface User {
@@ -14,11 +16,19 @@ interface User {
 }
 
 const Users = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users`, {
-    cache: "no-store",
-  });
+  const session = await getServerSession(options);
+  const authUser = session?.user?.email;
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/users/auth/${authUser}`,
+    {
+      cache: "no-store",
+    }
+  );
 
   const users = await res.json();
+
+  console.log(users);
 
   return (
     <div className="m-4">
@@ -40,26 +50,26 @@ const Users = async () => {
             </tr>
           </thead>
           <tbody className="text-gray-600 text-sm font-light">
-            {users.map((user: User) => (
+            {users.map((u: User) => (
               <tr
-                key={user._id}
+                key={u._id}
                 className="border-b border-gray-200 hover:bg-gray-100"
               >
-                <td className="py-3 px-6">{user.name}</td>
-                <td className="py-3 px-6">{user.email}</td>
-                <td className="py-3 px-6">{user.isAdmin.toString()}</td>
+                <td className="py-3 px-6">{u.name}</td>
+                <td className="py-3 px-6">{u.email}</td>
+                <td className="py-3 px-6">{u.isAdmin.toString()}</td>
                 <td className="py-3 px-6 flex gap-2">
-                  <Link href={`/dashboard/users/edit/${user._id}`}>
+                  <Link href={`/dashboard/users/edit/${u._id}`}>
                     <button className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700">
                       Edit
                     </button>
                   </Link>
-                  <Link href={`/dashboard/users/${user._id}`}>
+                  <Link href={`/dashboard/users/${u._id}`}>
                     <button className="bg-pink-500 text-white py-1 px-3 rounded hover:bg-pink-700">
                       Details
                     </button>
                   </Link>
-                  <DeleteBtn id={user._id} path={"users"} />
+                  <DeleteBtn id={u._id} path={"users"} />
                 </td>
               </tr>
             ))}

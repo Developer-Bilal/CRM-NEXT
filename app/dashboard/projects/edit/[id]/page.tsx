@@ -379,7 +379,7 @@ const EditProject = () => {
             Progress Tracker
           </label>
           <input
-            value={progressTracker}
+            value={`${progressTracker}%`}
             // onChange={(e) => setProgressTracker(e.target.value)}
             // required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"

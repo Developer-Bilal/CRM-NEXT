@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createUser,
   deleteUser,
+  getSelectedUsers,
   getUser,
   getUsers,
   updateUser,
@@ -21,6 +22,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const UserRouter = Router();
+
+UserRouter.get("/auth/:user", getSelectedUsers);
 
 UserRouter.get("/", getUsers).post(
   "/",

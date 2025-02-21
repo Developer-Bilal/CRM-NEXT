@@ -189,7 +189,7 @@ const ViewProject = () => {
             Progress Tracker
           </label>
           <div className="mt-1 block w-full p-2 border border-gray-300 rounded">
-            {project.progressTracker}
+            {`${project.progressTracker}%`}
           </div>
         </div>
         <div className="mb-4">
