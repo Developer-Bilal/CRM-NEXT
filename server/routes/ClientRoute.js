@@ -4,6 +4,7 @@ import {
   deleteClient,
   getClient,
   getClients,
+  getUserClients,
   updateClient,
 } from "../controllers/ClientController.js";
 import multer from "multer";
@@ -20,6 +21,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const ClientRouter = Router();
+
+ClientRouter.get("/auth/:user", getUserClients);
 
 ClientRouter.get("/", getClients).post(
   "/",

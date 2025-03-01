@@ -4,6 +4,7 @@ import {
   deleteProject,
   getProject,
   getProjects,
+  getUserProjects,
   updateProject,
 } from "../controllers/ProjectController.js";
 
@@ -21,6 +22,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const ProjectRouter = Router();
+
+ProjectRouter.get("/auth/:user", getUserProjects);
 
 ProjectRouter.get("/", getProjects).post(
   "/",

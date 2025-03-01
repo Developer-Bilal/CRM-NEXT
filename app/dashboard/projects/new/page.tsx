@@ -3,8 +3,8 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
-
 import { DatePicker } from "@/components/DatePicker";
+import { getSession } from "next-auth/react";
 
 interface arrayClient {
   _id: string;
@@ -56,7 +56,16 @@ const CreateProject = () => {
   const [clients, setClients] = useState([]);
   const [developers, setDevelopers] = useState([]);
 
+  // auth user
+  const [authUser, setAuthUser] = useState<string>("");
+
   useEffect(() => {
+    // function
+    const getCurrentSession = async () => {
+      const session = await getSession();
+      setAuthUser(session?.user?.email as string);
+    };
+    //
     axios
       .get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/clients`)
       .then((res) => {
@@ -85,6 +94,9 @@ const CreateProject = () => {
     // percentage
     setProgressTracker(Math.round((count / total) * 100));
     //
+
+    // call function
+    getCurrentSession();
   }, [milestones]);
 
   // handle file change
@@ -155,6 +167,9 @@ const CreateProject = () => {
     formData.append("milestones", JSON.stringify(milestones));
     formData.append("progressTracker", progressTracker.toString());
     formData.append("notes", notes);
+
+    // auth user
+    formData.append("addedBy", authUser);
 
     // Check if files are selected
     if (relatedDocuments && communicationHistory) {

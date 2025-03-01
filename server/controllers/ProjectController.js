@@ -15,6 +15,17 @@ export const getProjects = async (req, res) => {
   }
 };
 
+// GET User Projects
+export const getUserProjects = async (req, res) => {
+  const { user } = req.params;
+  try {
+    const projects = await Projects.find({ addedBy: `${user}` });
+    return res.status(200).json(projects);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 // CREATE Project
 export const createProject = async (req, res) => {
   const {
@@ -35,6 +46,7 @@ export const createProject = async (req, res) => {
     notes = "",
     relatedDocuments = "",
     communicationHistory = "",
+    addedBy = "",
   } = req.body;
   try {
     if (!title) {
@@ -96,6 +108,7 @@ export const createProject = async (req, res) => {
       notes,
       relatedDocuments: uploadResults[0].url,
       communicationHistory: uploadResults[1].url,
+      addedBy,
     });
     return res.status(200).json({ message: "created successfully" });
   } catch (error) {

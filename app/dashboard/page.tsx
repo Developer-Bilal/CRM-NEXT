@@ -70,13 +70,12 @@ const Dashboard = async () => {
         </Link>
       </div>
       {/* className="w-[600px] h-[600px] mx-auto border-2 border-black" */}
-
       <div className="grid grid-cols-2 gap-2">
+        <LineProjectsAdded />
         <MyBarChart />
         <MyBarAdminChart />
         <BarProjectStatus />
         <BarPriority />
-        {/* <LineProjectsAdded /> */}
       </div>
 
       <div className="bg-orange-200 my-4">

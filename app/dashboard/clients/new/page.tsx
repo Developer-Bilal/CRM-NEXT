@@ -2,9 +2,10 @@
 
 import { DatePicker } from "@/components/DatePicker";
 import axios from "axios";
+import { getSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { CountryDropdown } from "react-country-region-selector";
 
 const CreateClient = () => {
@@ -24,6 +25,18 @@ const CreateClient = () => {
   // error
   const [urlError, setUrlError] = useState("");
   const router = useRouter();
+
+  // auth user
+  const [authUser, setAuthUser] = useState<string>("");
+
+  useEffect(() => {
+    async function getCurrentSession() {
+      const session = await getSession();
+      setAuthUser(session?.user?.email as string);
+    }
+
+    getCurrentSession();
+  }, []);
 
   const handleProfilePhoto = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files ? e.target.files[0] : null;
@@ -56,6 +69,8 @@ const CreateClient = () => {
         date ? new Date(date).toISOString().split("T")[0] : ""
       );
       formData.append("additionalInfo", additionalInfo);
+      // auth user
+      formData.append("addedBy", authUser);
       // profile photo file
       if (profilePhoto) {
         formData.append("profilePhoto", profilePhoto);

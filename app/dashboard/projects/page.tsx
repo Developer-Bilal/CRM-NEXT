@@ -1,4 +1,6 @@
+import { options } from "@/app/api/auth/[...nextauth]/options";
 import DeleteProjectBtn from "@/app/components/dashboard/projects/DeleteProjectBtn";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 
 interface Project {
@@ -23,9 +25,15 @@ interface Project {
 }
 
 const Projects = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/projects`, {
-    cache: "no-store",
-  });
+  const session = await getServerSession(options);
+  const authUser = session?.user?.email;
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/projects/auth/${authUser}`,
+    {
+      cache: "no-store",
+    }
+  );
 
   const projects = await res.json();
 

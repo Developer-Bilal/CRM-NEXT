@@ -1,4 +1,6 @@
+import { options } from "@/app/api/auth/[...nextauth]/options";
 import DeleteBtn from "@/app/components/dashboard/DeleteBtn";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 
 interface Developer {
@@ -18,8 +20,11 @@ interface Developer {
 }
 
 const Developers = async () => {
+  const session = await getServerSession(options);
+  const authUser = session?.user?.email;
+
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/developers`,
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/developers/auth/${authUser}`,
     {
       cache: "no-store",
     }

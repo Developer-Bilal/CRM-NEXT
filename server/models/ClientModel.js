@@ -34,6 +34,9 @@ const clientSchema = mongoose.Schema(
     additionalInfo: {
       type: String,
     },
+    addedBy: {
+      type: String,
+    },
   },
   {
     timestamps: true,

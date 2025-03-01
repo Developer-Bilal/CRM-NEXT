@@ -54,6 +54,9 @@ const projectSchema = mongoose.Schema(
     communicationHistory: {
       type: String,
     },
+    addedBy: {
+      type: String,
+    },
   },
   {
     timestamps: true,

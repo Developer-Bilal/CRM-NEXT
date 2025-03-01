@@ -15,6 +15,17 @@ export const getDevelopers = async (req, res) => {
   }
 };
 
+// GET User Developers
+export const getUserDevelopers = async (req, res) => {
+  const { user } = req.params;
+  try {
+    const developers = await Developers.find({ addedBy: `${user}` });
+    return res.status(200).json(developers);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 // CREATE developer
 export const createDeveloper = async (req, res) => {
   const {
@@ -28,6 +39,7 @@ export const createDeveloper = async (req, res) => {
     portfolioURL = "",
     date = "",
     additionalInfo = "",
+    addedBy = "",
   } = req.body;
   try {
     if (!name || !email) {
@@ -78,6 +90,7 @@ export const createDeveloper = async (req, res) => {
       resumeFile: uploadResults[1].url,
       date,
       additionalInfo,
+      addedBy,
     });
     return res.status(200).json({ message: "created successfully" });
   } catch (error) {

@@ -23,7 +23,6 @@ export const getSelectedUsers = async (req, res) => {
     const users = await Users.find({ addedBy: `${user}` });
     return res.status(200).json(users);
   } catch (error) {
-    console.log(error.message);
     return res.status(500).json({ message: error.message });
   }
 };

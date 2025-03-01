@@ -4,6 +4,7 @@ import {
   deleteDeveloper,
   getDeveloper,
   getDevelopers,
+  getUserDevelopers,
   updateDeveloper,
 } from "../controllers/DeveloperController.js";
 
@@ -21,6 +22,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const DeveloperRoute = Router();
+
+DeveloperRoute.get("/auth/:user", getUserDevelopers);
 
 DeveloperRoute.get("/", getDevelopers).post(
   "/",

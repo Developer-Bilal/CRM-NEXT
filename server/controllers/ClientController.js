@@ -14,6 +14,17 @@ export const getClients = async (req, res) => {
   }
 };
 
+// GET User Client
+export const getUserClients = async (req, res) => {
+  const { user } = req.params;
+  try {
+    const clients = await Clients.find({ addedBy: `${user}` });
+    return res.status(200).json(clients);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 // CREATE client
 export const createClient = async (req, res) => {
   const {
@@ -26,6 +37,7 @@ export const createClient = async (req, res) => {
     linkedin = "",
     date = "",
     additionalInfo = "",
+    addedBy = "",
   } = req.body;
   try {
     if (!name || !email) {
@@ -62,6 +74,7 @@ export const createClient = async (req, res) => {
       linkedin,
       date,
       additionalInfo,
+      addedBy,
     });
     return res.status(200).json({ message: "created successfully" });
   } catch (error) {
