@@ -46,10 +46,10 @@ export const createClient = async (req, res) => {
         .json({ message: "Please fill all fields properly" });
     }
 
-    const file = req.file;
+    // file upload
     let uploadResult = "";
-
-    if (file) {
+    if (req.file) {
+      const file = req.file;
       cloudinary.config({
         cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
         api_key: process.env.CLOUDINARY_API_KEY,
@@ -66,7 +66,7 @@ export const createClient = async (req, res) => {
     const client = await Clients.create({
       name,
       email,
-      profilePhoto: uploadResult.url,
+      profilePhoto: uploadResult ? uploadResult.url : "",
       phone,
       country,
       source,

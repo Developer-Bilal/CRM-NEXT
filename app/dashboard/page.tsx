@@ -7,6 +7,7 @@ import MyBarAdminChart from "../../components/MyBarAdminChart";
 import BarProjectStatus from "../../components/BarProjectStatus";
 import BarPriority from "../../components/BarPriority";
 import LineProjectsAdded from "../../components/LineProjectsAdded";
+import LineProjectsCompleted from "../../components/LineProjectsCompleted";
 import Link from "next/link";
 
 const Dashboard = async () => {
@@ -71,14 +72,15 @@ const Dashboard = async () => {
       </div>
       {/* className="w-[600px] h-[600px] mx-auto border-2 border-black" */}
       <div className="grid grid-cols-2 gap-2">
-        <LineProjectsAdded />
+        <LineProjectsCompleted />
         <MyBarChart />
         <MyBarAdminChart />
-        <BarProjectStatus />
+        <LineProjectsAdded />
         <BarPriority />
+        <BarProjectStatus />
       </div>
 
-      <div className="bg-orange-200 my-4">
+      {/* <div className="bg-orange-200 my-4">
         <table className="min-w-full bg-white border border-gray-200">
           <thead>
             <tr className="w-full bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
@@ -97,7 +99,7 @@ const Dashboard = async () => {
             </tr>
           </tbody>
         </table>
-      </div>
+      </div> */}
     </div>
   );
 };

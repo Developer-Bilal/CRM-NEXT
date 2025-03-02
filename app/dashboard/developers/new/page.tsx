@@ -88,8 +88,8 @@ const CreateDeveloper = () => {
         formData.append("profilePhoto", profilePhoto);
         formData.append("resumeFile", resumeFile);
       } else {
-        console.log("No files selected");
-        return;
+        formData.append("profilePhoto", "");
+        formData.append("resumeFile", "");
       }
 
       axios
@@ -145,7 +145,7 @@ const CreateDeveloper = () => {
           <input
             type="file"
             onChange={handleProfilePhoto}
-            required
+            // required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
           />
           {preview && (
@@ -234,7 +234,7 @@ const CreateDeveloper = () => {
             type="file"
             name="resumeFile"
             onChange={handleResumeFile}
-            required
+            // required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
           />
         </div>

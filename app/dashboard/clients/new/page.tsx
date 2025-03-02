@@ -75,8 +75,7 @@ const CreateClient = () => {
       if (profilePhoto) {
         formData.append("profilePhoto", profilePhoto);
       } else {
-        console.log("No files selected");
-        return;
+        formData.append("profilePhoto", "");
       }
 
       axios
@@ -132,7 +131,7 @@ const CreateClient = () => {
             type="file"
             name="profilePhoto"
             onChange={handleProfilePhoto}
-            required
+            // required
           />
           {preview && (
             <Image

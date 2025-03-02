@@ -49,23 +49,22 @@ export const createUser = async (req, res) => {
     }
 
     // Upload image
-    const file = req.file;
+    let uploadResult = "";
+    if (req.file) {
+      const file = req.file;
+      cloudinary.config({
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_SECRET,
+      });
 
-    if (!file) {
-      return res.status(400).json({ message: "No file uploaded" });
+      uploadResult = await cloudinary.uploader.upload(file.path, {
+        resource_type: "image",
+      });
+
+      fs.unlinkSync(file.path);
     }
 
-    cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_SECRET,
-    });
-
-    const uploadResult = await cloudinary.uploader.upload(file.path, {
-      resource_type: "image",
-    });
-
-    fs.unlinkSync(file.path);
     //
     const salt = await bcrypt.genSalt(10);
     const hashedPass = await bcrypt.hash(password, salt);
@@ -76,7 +75,7 @@ export const createUser = async (req, res) => {
       email,
       phone,
       country,
-      profilePhoto: uploadResult.url,
+      profilePhoto: uploadResult ? uploadResult.url : "",
       linkedin,
       additionalInfo,
       password: hashedPass,

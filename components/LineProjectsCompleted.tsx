@@ -18,16 +18,16 @@ import {
 const chartData = [
   { month: "January", projects: 1 },
   { month: "February", projects: 3 },
-  { month: "March", projects: 2 },
-  { month: "April", projects: 1 },
-  { month: "May", projects: 5 },
-  { month: "June", projects: 4 },
+  { month: "March", projects: 4 },
+  { month: "April", projects: 2 },
+  { month: "May", projects: 1 },
+  { month: "June", projects: 6 },
 ];
 
 const chartConfig = {
   projects: {
     label: "projects",
-    color: "hsl(var(--chart-3))",
+    color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig;
 
@@ -35,8 +35,8 @@ export default function Component() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Projects Added</CardTitle>
-        <CardDescription>Number of projects added</CardDescription>
+        <CardTitle>Projects Completed</CardTitle>
+        <CardDescription>Number of projects completed</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>

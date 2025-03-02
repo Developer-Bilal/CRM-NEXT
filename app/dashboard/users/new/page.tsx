@@ -73,8 +73,7 @@ const CreateUser = () => {
       if (profilePhoto) {
         formData.append("profilePhoto", profilePhoto);
       } else {
-        console.log("No files selected");
-        return;
+        formData.append("profilePhoto", "");
       }
 
       axios
@@ -163,7 +162,7 @@ const CreateUser = () => {
             type="file"
             name="profilePhoto"
             onChange={handleProfilePhoto}
-            required
+            // required
           />
           {preview && (
             <Image

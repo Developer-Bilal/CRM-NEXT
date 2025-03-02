@@ -48,46 +48,45 @@ export const createDeveloper = async (req, res) => {
         .json({ message: "Please fill all fields properly" });
     }
 
-    // Extract all file arrays from req.files
-    const fileArrays = Object.values(req.files);
+    // files upload
+    let uploadResults = [];
+    if (req.files) {
+      // Extract all file arrays from req.files
+      const fileArrays = Object.values(req.files);
 
-    // Flatten the nested arrays into a single array of files
-    const allFiles = fileArrays.flat();
+      // Flatten the nested arrays into a single array of files
+      const allFiles = fileArrays.flat();
 
-    // file upload
-    if (!allFiles.length) {
-      return res.status(400).json({ message: "No file uploaded" });
+      cloudinary.config({
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_SECRET,
+      });
+
+      // Iterate over files and upload each file to Cloudinary
+      uploadResults = await Promise.all(
+        allFiles.map((file) =>
+          cloudinary.uploader.upload(file.path, {
+            resource_type: "auto",
+          })
+        )
+      );
+
+      // Remove the file from local storage
+      allFiles.map((file) => fs.unlinkSync(file.path));
     }
-
-    cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_SECRET,
-    });
-
-    // Iterate over files and upload each file to Cloudinary
-    const uploadResults = await Promise.all(
-      allFiles.map((file) =>
-        cloudinary.uploader.upload(file.path, {
-          resource_type: "auto",
-        })
-      )
-    );
-
-    // Remove the file from local storage
-    allFiles.map((file) => fs.unlinkSync(file.path));
 
     const developers = await Developers.create({
       name,
       email,
-      profilePhoto: uploadResults[0].url,
+      profilePhoto: uploadResults.length > 1 ? uploadResults[0].url : "",
       role,
       phone,
       country,
       source,
       portfolioURL,
       linkedin,
-      resumeFile: uploadResults[1].url,
+      resumeFile: uploadResults.length > 1 ? uploadResults[1].url : "",
       date,
       additionalInfo,
       addedBy,

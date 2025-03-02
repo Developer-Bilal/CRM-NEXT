@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import { DatePicker } from "@/components/DatePicker";
 import { getSession } from "next-auth/react";
+import { currencyData } from "@/lib/constants/currenciesList";
 
 interface arrayClient {
   _id: string;
@@ -32,6 +33,8 @@ const CreateProject = () => {
   const [deadline, setDeadline] = useState<Date | undefined>(new Date());
   const [priorityLevel, setPriorityLevel] = useState("");
   const [budget, setBudget] = useState("");
+  // currency
+  const [currency, setCurrency] = useState("");
   const [billing, setBilling] = useState("");
   const [requirements, setRequirements] = useState("");
   const [milestones, setMilestones] = useState<Milestone>({
@@ -161,7 +164,11 @@ const CreateProject = () => {
       deadline ? new Date(deadline).toISOString().split("T")[0] : ""
     );
     formData.append("priorityLevel", priorityLevel);
-    formData.append("budget", budget);
+    // budget object with currency
+    formData.append(
+      "budget",
+      JSON.stringify({ currency: currency, budget: budget })
+    );
     formData.append("billing", billing);
     formData.append("requirements", requirements);
     formData.append("milestones", JSON.stringify(milestones));
@@ -176,8 +183,8 @@ const CreateProject = () => {
       formData.append("relatedDocuments", relatedDocuments);
       formData.append("communicationHistory", communicationHistory);
     } else {
-      console.log("No files selected");
-      return;
+      formData.append("relatedDocuments", "");
+      formData.append("communicationHistory", "");
     }
 
     axios
@@ -331,12 +338,32 @@ const CreateProject = () => {
           <label className="block text-sm font-medium text-gray-700">
             Budget
           </label>
-          <input
-            value={budget}
-            onChange={(e) => setBudget(e.target.value)}
-            required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
-          />
+          <div className="flex gap-2">
+            <select
+              value={currency}
+              onChange={(e) => setCurrency(e.target.value)}
+              className="mt-1 block p-2 border border-gray-300 rounded w-1/4"
+              required
+            >
+              <option value="">Select a currency</option>
+              {currencyData.map((cd) => (
+                <option key={cd.symbol}>{cd.symbol}</option>
+              ))}
+            </select>
+            <input
+              type="number"
+              // only write numbers
+              onKeyPress={(event) => {
+                if (!/[0-9]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
+              value={budget}
+              onChange={(e) => setBudget(e.target.value)}
+              required
+              className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
@@ -434,7 +461,7 @@ const CreateProject = () => {
             type="file"
             name="relatedDocuments"
             onChange={handleRelatedDocuments}
-            required
+            // required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
           />
         </div>
@@ -446,7 +473,7 @@ const CreateProject = () => {
             type="file"
             name="communicationHistory"
             onChange={handleCommunicationHistory}
-            required
+            // required
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
           />
         </div>
