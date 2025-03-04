@@ -9,10 +9,21 @@ import BarPriority from "../../components/BarPriority";
 import LineProjectsAdded from "../../components/LineProjectsAdded";
 import LineProjectsCompleted from "../../components/LineProjectsCompleted";
 import Link from "next/link";
+import {
+  getClients,
+  getDevelopers,
+  getProjects,
+  getUsers,
+} from "@/actions/getData";
 
 const Dashboard = async () => {
   const session = await getServerSession(options);
-  console.log(session);
+  const authUser = session?.user?.email;
+
+  const users = await getUsers(authUser);
+  const projects = await getProjects(authUser);
+  const developers = await getDevelopers(authUser);
+  const clients = await getClients(authUser);
 
   return (
     <div className="flex flex-col gap-2 m-4">
@@ -25,7 +36,7 @@ const Dashboard = async () => {
           <div className="flex">
             <div className="flex items-center">
               <Plus className="size-3" />
-              10
+              {clients.length}
             </div>
             <TrendingUp className="text-green-500" />
           </div>
@@ -38,7 +49,7 @@ const Dashboard = async () => {
           <div className="flex">
             <div className="flex items-center">
               <Plus className="size-3" />
-              10
+              {projects.length}
             </div>
             <TrendingUp className="text-green-500" />
           </div>
@@ -51,7 +62,7 @@ const Dashboard = async () => {
           <div className="flex">
             <div className="flex items-center">
               <Plus className="size-3" />
-              10
+              {users.length}
             </div>
             <TrendingUp className="text-green-500" />
           </div>
@@ -64,14 +75,14 @@ const Dashboard = async () => {
           <div className="flex">
             <div className="flex items-center">
               <Plus className="size-3" />
-              10
+              {developers.length}
             </div>
             <TrendingUp className="text-green-500" />
           </div>
         </Link>
       </div>
       {/* className="w-[600px] h-[600px] mx-auto border-2 border-black" */}
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-3 gap-2">
         <LineProjectsCompleted />
         <MyBarChart />
         <MyBarAdminChart />

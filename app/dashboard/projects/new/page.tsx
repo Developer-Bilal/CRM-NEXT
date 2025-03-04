@@ -6,6 +6,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { DatePicker } from "@/components/DatePicker";
 import { getSession } from "next-auth/react";
 import { currencyData } from "@/lib/constants/currenciesList";
+import { MultiSelect } from "react-multi-select-component";
 
 interface arrayClient {
   _id: string;
@@ -59,32 +60,48 @@ const CreateProject = () => {
   const [clients, setClients] = useState([]);
   const [developers, setDevelopers] = useState([]);
 
+  //
+  const [clientsSelected, setClientsSelected] = useState([]);
+  const [developersSelected, setDevelopersSelected] = useState([]);
+  const [managersSelected, setManagersSelected] = useState([]);
+
   // auth user
   const [authUser, setAuthUser] = useState<string>("");
 
+  console.log(clientsSelected);
+
   useEffect(() => {
-    // function
-    const getCurrentSession = async () => {
-      const session = await getSession();
-      setAuthUser(session?.user?.email as string);
-    };
-    //
-    axios
-      .get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/clients`)
-      .then((res) => {
-        console.log(res.data);
-        setClients(res.data);
-      })
-      .catch((err) => console.log(err));
+    // get current session
+    getSession()
+      .then((session) => {
+        // if success save auth user
+        setAuthUser(session?.user?.email as string);
+        // if success fetch developers and clients
+        axios
+          .get(
+            `${process.env.NEXT_PUBLIC_API_ENDPOINT}/clients/auth/${session?.user?.email}`
+          )
+          .then((res) => {
+            setClients(res.data);
+          })
+          .catch((err) => console.log(err));
 
-    axios
-      .get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/developers`)
-      .then((res) => {
-        console.log(res.data);
-        setDevelopers(res.data);
+        axios
+          .get(
+            `${process.env.NEXT_PUBLIC_API_ENDPOINT}/developers/auth/${session?.user?.email}`
+          )
+          .then((res) => {
+            setDevelopers(res.data);
+          })
+          .catch((err) => console.log(err));
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
+  // milestones
+  useEffect(() => {
     //count
     const count = Object.values(milestones).reduce(
       (acc, val) => acc + (val ? 1 : 0),
@@ -97,9 +114,6 @@ const CreateProject = () => {
     // percentage
     setProgressTracker(Math.round((count / total) * 100));
     //
-
-    // call function
-    getCurrentSession();
   }, [milestones]);
 
   // handle file change
@@ -142,6 +156,25 @@ const CreateProject = () => {
     }
   };
 
+  // process data
+  const processData = () => {
+    let optionsClients: any = [];
+    let optionsDevelopers: any = [];
+
+    // map through each
+    clients.map((c: arrayClient) => {
+      optionsClients.push({ label: `${c.name}`, value: `${c.name}` });
+    });
+
+    developers.map((d: arrayDeveloper) => {
+      optionsDevelopers.push({ label: `${d.name}`, value: `${d.name}` });
+    });
+
+    return { optionsClients, optionsDevelopers };
+  };
+
+  const { optionsClients, optionsDevelopers } = processData();
+
   // handle submit form
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -152,9 +185,9 @@ const CreateProject = () => {
     formData.append("title", title);
     formData.append("description", description);
     formData.append("status", status);
-    formData.append("client", client);
-    formData.append("developer", developer);
-    formData.append("manager", manager);
+    formData.append("client", JSON.stringify(clientsSelected));
+    formData.append("developer", JSON.stringify(developersSelected));
+    formData.append("manager", JSON.stringify(managersSelected));
     formData.append(
       "startDate",
       startDate ? new Date(startDate).toISOString().split("T")[0] : ""
@@ -194,7 +227,6 @@ const CreateProject = () => {
         },
       })
       .then((res) => {
-        console.log(res.data);
         router.push("/dashboard/projects");
       })
       .catch((err) => {
@@ -252,7 +284,7 @@ const CreateProject = () => {
           <label className="block text-sm font-medium text-gray-700">
             Client
           </label>
-          <select
+          {/* <select
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
             value={client}
             onChange={(e) => setClient(e.target.value)}
@@ -265,13 +297,20 @@ const CreateProject = () => {
                   {arrayclient.name}
                 </option>
               ))}
-          </select>
+          </select> */}
+          <MultiSelect
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            options={optionsClients}
+            value={clientsSelected}
+            onChange={setClientsSelected}
+            labelledBy="Clients"
+          />
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Developer
           </label>
-          <select
+          {/* <select
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
             value={developer}
             onChange={(e) => setDeveloper(e.target.value)}
@@ -284,13 +323,20 @@ const CreateProject = () => {
                   {arrayDeveloper.name}
                 </option>
               ))}
-          </select>
+          </select> */}
+          <MultiSelect
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            options={optionsDevelopers}
+            value={developersSelected}
+            onChange={setDevelopersSelected}
+            labelledBy="Developers"
+          />
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Manager
           </label>
-          <select
+          {/* <select
             className="mt-1 block w-full p-2 border border-gray-300 rounded"
             value={manager}
             onChange={(e) => setManager(e.target.value)}
@@ -303,7 +349,14 @@ const CreateProject = () => {
                   {arrayDeveloper.name}
                 </option>
               ))}
-          </select>
+          </select> */}
+          <MultiSelect
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            options={optionsDevelopers}
+            value={managersSelected}
+            onChange={setManagersSelected}
+            labelledBy="Managers"
+          />
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
